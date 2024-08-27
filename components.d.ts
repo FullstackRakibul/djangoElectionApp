@@ -24,7 +24,6 @@ declare module 'vue' {
     AResult: typeof import('ant-design-vue/es')['Result']
     ARow: typeof import('ant-design-vue/es')['Row']
     AStatistic: typeof import('ant-design-vue/es')['Statistic']
-    AStatisticCountdown: typeof import('ant-design-vue/es')['StatisticCountdown']
     ATable: typeof import('ant-design-vue/es')['Table']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

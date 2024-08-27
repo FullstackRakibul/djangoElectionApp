@@ -1,15 +1,25 @@
 <template>
   <div class="">
-    <div style="background: #ececec; padding: 30px">
-
-
-
-
+    <div style="padding: 30px">
       <a-row :gutter="16">
         <a-col :span="12">
-          <a-card>
-            <a-statistic title="Student Party" :value="11.28" :precision="2" suffix="%"
-              :value-style="{ color: '#3f8600' }" style="margin-right: 50px">
+          <a-card
+            :style="{ 
+              backgroundImage: 'url(https://cdn.vectorstock.com/i/500p/52/42/gradient-wave-design-background-green-blue-vector-47405242.jpg)', 
+              backgroundSize: 'cover', 
+              backgroundPosition: 'center',
+              color: '#fff'
+            }"
+          >
+            <a-statistic 
+             title="Student Party" 
+             :value="67.46" 
+             :precision="2" 
+             suffix="%"
+             style="margin-right: 50px"
+             :title-style="{ color: '#fff', fontWeight: 'bold' }"
+             :value-style="{ color: '#fff', fontWeight: 'bold' }" 
+             >
               <template #prefix>
                 <arrow-up-outlined />
               </template>
