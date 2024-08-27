@@ -1,5 +1,6 @@
 import UserTypeList from '@/views/users/UserTypeList.vue';
 import ElectionOperation from '@/views/core/ElectionOperation.vue';
+import CRUDCountry from '@/views/forms/CRUD.Country.vue';
 import Login from '@/layouts/auth/Login.vue';
 import PrivateLayout from '@/layouts/PrivateLayout.vue';
 import NotFound from '@/layouts/404.vue'
@@ -26,6 +27,11 @@ const router = createRouter({
           path: "/usertype_list",
           name: "usertypeList",
           component: UserTypeList,
+        },
+        {
+          path: "/add_country",
+          name: "addCountry",
+          component: CRUDCountry,
         },
         
       ],

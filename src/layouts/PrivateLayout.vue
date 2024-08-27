@@ -16,7 +16,7 @@ const collapsed = ref<boolean>(true);
 
 onMounted(() => {
   const token = localStorage.getItem('token');
-  const router = useRouter(); 
+  const router = useRouter();
   if (!token) {
     router.push({ name: 'login' });
   }
@@ -30,7 +30,7 @@ onMounted(() => {
       style="background-color: white;">
       <div class="logo">
         <a-image :width="45"
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWm2-J1ZpsiXxwlb4EV6Mwch_Ikeb8joz8Sw&s" />
+          src="https://play-lh.googleusercontent.com/SOoMR6xk74RUyLIo8Ub-fmGgbfdzTQ04UkFeJFRTsjyxfIx0ZwkMrJLlZ6E2d5Fg2-8" />
       </div>
       <nav>
         <a-menu v-model:selectedKeys="selectedKeys" mode="inline">
@@ -47,9 +47,9 @@ onMounted(() => {
             </router-link>
           </a-menu-item>
           <a-menu-item key="3">
-            <router-link to="/pattern-and-cutting-accuracy">
+            <router-link to="/add_country">
               <ExperimentOutlined />
-              <span>Pattern and Cutting Accuracy</span>
+              <span>Add Country</span>
             </router-link>
           </a-menu-item>
           <a-menu-item key="4">
