@@ -13,10 +13,10 @@
           >
             <a-statistic 
              title="Student Party" 
-             :value="67.46" 
+             :value="63.46" 
              :precision="2" 
              suffix="%"
-             style="margin-right: 50px"
+             style="margin-right: 50px;color: beige;"
              :title-style="{ color: '#fff', fontWeight: 'bold' }"
              :value-style="{ color: '#fff', fontWeight: 'bold' }" 
              >
@@ -28,7 +28,7 @@
         </a-col>
         <a-col :span="12">
           <a-card>
-            <a-statistic title="Teacher's Party" :value="9.3" :precision="2" suffix="%" class="demo-class"
+            <a-statistic title="Teacher's Party" :value="31.19" :precision="2" suffix="%" class="demo-class"
               :value-style="{ color: '#cf1322' }">
               <template #prefix>
                 <arrow-down-outlined />
@@ -44,7 +44,7 @@
 
         <a-col :span="12">
           <a-card>
-            <a-statistic title="Worker's Party" :value="20.78" :precision="2" suffix="%" class="demo-class"
+            <a-statistic title="Worker's Party" :value="2.01" :precision="2" suffix="%" class="demo-class"
               :value-style="{ color: '#cf1322' }">
               <template #prefix>
                 <arrow-down-outlined />
@@ -54,7 +54,7 @@
         </a-col>
         <a-col :span="12">
           <a-card>
-            <a-statistic title="Management Party" :value="56.98" :precision="2" suffix="%"
+            <a-statistic title="Management Party" :value="4.12" :precision="2" suffix="%"
               :value-style="{ color: '#3f8600' }" style="margin-right: 50px">
               <template #prefix>
                 <arrow-up-outlined />
