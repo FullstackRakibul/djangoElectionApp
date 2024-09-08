@@ -1,38 +1,38 @@
 <script lang="ts" setup>
 import { onMounted, reactive, ref } from 'vue';
-import { countryAddService, deleteCountryService, getCountryListService, updateCountryService } from "../../services/common.services";
+import { countryAddService, getCompanyListService, updateCountryService } from "../../services/common.services";
 import { message } from 'ant-design-vue';
-
+import { electionHttpJson } from '@/utils/axios/base.Http';
 interface FormState {
-  country_name: string;
-  country_name_ban: string;
+  company_name : string;
+  company_name_ban: string;
 }
 
-const countryList = ref([]);
+const companyList = ref([]);
 const isEditing = ref(false);
-const editingCountryId = ref(0);
+const editingCompanyId = ref(0);
 const isDeleteModalOpen = ref(false);
-const deletingCountryId = ref(0);
+const deletingCompanyId = ref(0);
 
-const countryForm = reactive<FormState>({
-  country_name: '',
-  country_name_ban: '',
+const companyForm = reactive<FormState>({
+  company_name : '',
+  company_name_ban: '',
 });
 const onFinish = async (values: any) => {
   if (isEditing.value) {
-    updateCountry(values, editingCountryId.value);
+    updateCompnay(values, editingCompanyId.value);
   } else {
-    await saveCountry(values)
+    await saveCompany(values)
   }
-  await getCountryList();
+  await getCompanyList();
 };
 
 
-const saveCountry = async (values: FormState) => {
+const saveCompany = async (values: FormState) => {
   try {
     const res = await countryAddService(values);
     if (res.status === 201) {
-      message.success("Successfully created country");
+      message.success("Successfully created Company");
       resetForm();
     }
   } catch (er) {
@@ -41,7 +41,7 @@ const saveCountry = async (values: FormState) => {
 }
 
 
-const updateCountry = async (values: FormState, id: any) => {
+const updateCompnay = async (values: FormState, id: any) => {
   try {
     const res = await updateCountryService(values, id);
     if (res.status === 200) {
@@ -55,16 +55,17 @@ const updateCountry = async (values: FormState, id: any) => {
 }
 
 
-const deleteCountry = async () => {
+const deleteCompany = async () => {
+  const apiInstance = electionHttpJson();
   try {
-    const res = await deleteCountryService(deletingCountryId.value);
+    const res = await apiInstance.get('/add_company')
     if (res.status === 200) {
       message.success("Successfully deleted the country");
       resetForm();
     }
-    deletingCountryId.value = 0;
+    deletingCompanyId.value = 0;
     isDeleteModalOpen.value = false;
-    await getCountryList();
+    await getCompanyList();
   } catch (er) {
     message.error("Inernal server error");
   }
@@ -75,15 +76,15 @@ const onFinishFailed = (errorInfo: any) => {
 };
 
 const resetForm = () => {
-  countryForm.country_name = "";
-  countryForm.country_name_ban = ""
+  companyForm.company_name = "";
+  companyForm.company_name_ban = ""
 }
 
-const getCountryList = async () => {
+const getCompanyList = async () => {
   try {
-    const res = await getCountryListService();
+    const res = await getCompanyListService();
     if (res.status === 200) {
-      countryList.value = res.data.data;
+      companyList.value = res.data.data;
     }
   } catch (err) {
     message.error("Internal server error");
@@ -107,16 +108,16 @@ const columns = [
 ];
 
 
-const onEditButtonClick = async (id: any, country_name: any, country_name_ban: any) => {
+const onEditButtonClick = async (id: any, company_name: any, company_name_ban: any) => {
   isEditing.value = true;
-  editingCountryId.value = id;
-  countryForm.country_name = country_name;
-  countryForm.country_name_ban = country_name_ban
-  console.log(id, country_name, country_name_ban)
+  editingCompanyId.value = id;
+  companyForm.company_name = company_name;
+  companyForm.company_name_ban = company_name_ban
+  console.log(id, company_name, company_name_ban)
 }
 
 onMounted(() => {
-  getCountryList();
+  getCompanyList();
 })
 
 
@@ -126,16 +127,16 @@ onMounted(() => {
 
 <template>
   <a-card>
-    <a-form :model="countryForm" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 10 }" autocomplete="off"
+    <a-form :model="companyForm" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 10 }" autocomplete="off"
       @finish="onFinish" @finishFailed="onFinishFailed">
-      <a-form-item label="Country Name" name="country_name"
-        :rules="[{ required: true, message: 'Please input Country Name!' }]">
-        <a-input v-model:value="countryForm.country_name" />
+      <a-form-item label="Company Name" name="compnay_name"
+        :rules="[{ required: true, message: 'Please input Company Name !' }]">
+        <a-input v-model:value="companyForm.company_name" />
       </a-form-item>
 
       <a-form-item label="দেশের নাম" name="country_name_ban"
         :rules="[{ required: true, message: 'Please input your password!' }]">
-        <a-input v-model:value="countryForm.country_name_ban" />
+        <a-input v-model:value="companyForm.company_name_ban" />
       </a-form-item>
 
       <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
@@ -144,7 +145,7 @@ onMounted(() => {
     </a-form>
   </a-card>
   <a-card>
-    <a-table :pagination="false" :columns="columns" :data-source="countryList" bordered>
+    <a-table :pagination="false" :columns="columns" :data-source="companyForm" bordered>
       <template #bodyCell="{ text, record, index, column }">
         <template v-if="column.key === 'actions'">
           <div class="flex gap-4">
@@ -152,17 +153,17 @@ onMounted(() => {
               type="primary">Edit</a-button>
             <a-button @click="() => {
               isDeleteModalOpen = true;
-              deletingCountryId = record.id;
+              deletingCompanyId = record.id;
             }" danger type="primary">Delete</a-button>
           </div>
         </template>
       </template>
-      <template #title>List of Country</template>
-      <template #footer>Total Country</template>
+      <template #title>List of Company</template>
+      <template #footer>Total Company</template>
     </a-table>
   </a-card>
 
-  <a-modal v-model:open="isDeleteModalOpen" title="Modal" ok-text="Ok" cancel-text="Cancel" @ok="deleteCountry">
-    Do you really want to delete country?
+  <a-modal v-model:open="isDeleteModalOpen" title="Modal" ok-text="Ok" cancel-text="Cancel" @ok="deleteCompany">
+    Do you really want to delete company?
   </a-modal>
 </template>

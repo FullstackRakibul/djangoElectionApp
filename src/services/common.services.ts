@@ -16,6 +16,11 @@ export const getCountryListService = async()=>{
   return await electionHttpJson().get("/common/country_list");
 }
 
+export const getCompanyListService = async()=>{
+  return await electionHttpJson().get("/common/country_list");
+}
+
+
 export const updateCountryService = async (payload:any, id:any)=>{
   return await electionHttpJson().put("/common/country_list/?pk="+id, payload);
 }
