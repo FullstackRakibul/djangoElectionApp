@@ -1,59 +1,104 @@
+import { createRouter, createWebHistory } from 'vue-router';
 import UserTypeList from '@/views/users/UserTypeList.vue';
 import ElectionOperation from '@/views/core/ElectionOperation.vue';
-import CRUDCountry from '@/views/forms/CRUD.Country.vue';
-import CRUDCompany from '@/views/forms/CRUD.Company.vue';
+
 import Login from '@/layouts/auth/Login.vue';
 import PrivateLayout from '@/layouts/PrivateLayout.vue';
-import NotFound from '@/layouts/404.vue'
-import { createRouter, createWebHistory } from 'vue-router';
-import CRUDDesignation from '@/views/forms/CRUD.Designation.vue';
+import NotFound from '@/layouts/404.vue';
+
+const routes = [
+  {
+    path: '/login',
+    name: 'login',
+    component: Login,
+  },
+  {
+    path: '/',
+    component: PrivateLayout,
+    children: [
+      {
+        path: '',
+        name: 'electionOperation',
+        component: ElectionOperation,
+      },
+      {
+        path: 'usertype_list',
+        name: 'usertypeList',
+        component: ()=>import("@/views/users/UserTypeList.vue"),
+      },
+      {
+        path: 'add_designation',
+        name: 'addDesignation',
+        component: ()=>import("@/views/forms/DesignationForm.vue"),
+      },
+      {
+        path: 'add_country',
+        name: 'addCountry',
+        component: ()=>import ("@/views/forms/CountryForm.vue"),
+      },
+      {
+        path: 'add_company',
+        name: 'addCompany',
+        component: ()=>import('@/views/forms/CompanyForm.vue'),
+      },
+      {
+        path: 'add_address',
+        name: 'addAddress',
+        component: ()=>import('@/views/forms/AddressForm.vue'),
+      },
+      {
+        path: 'add_division',
+        name: 'addDivision',
+        component: () => import('@/views/forms/DivisionForm.vue'),
+      },
+      {
+        path: 'add_citycorporation',
+        name: 'addCityCorporation',
+        component: () => import('@/views/forms/CityCorporationForm.vue'),
+      },
+      {
+        path: 'add_district',
+        name: 'addDistrict',
+        component: () => import('@/views/forms/DesignationForm.vue'),
+      },
+      {
+        path: 'add_upzillah',
+        name: 'addUpzillah',
+        component: () => import('@/views/forms/UpzillahForm.vue'),
+      },
+      {
+        path: 'add_union',
+        name: 'addUnion',
+        component: () => import('@/views/forms/UnionForm.vue'),
+      },
+      {
+        path: 'add_ward',
+        name: 'addWard',
+        component: () => import('@/views/forms/WardForm.vue'),
+      },
+      // Operations Routes
+      {
+        path: 'operation-dashboard',
+        name: 'operationDashboard',
+        component: () => import('@/views/operations/OperationDashboard.vue'),
+      },
+      {
+        path: 'audit-result',
+        name: 'auditResult',
+        component: () => import('@/views/operations/AuditResult.vue'),
+      },
+    ],
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: '404',
+    component: NotFound,
+  },
+];
 
 const router = createRouter({
-  history: createWebHistory('/#/'),
-  routes: [
-    {
-      path: "/login",
-      name: "login",
-      component: Login,
-    },
-    {
-      path: "/",
-      component: PrivateLayout,
-      children: [
-        {
-          path: "",
-          name: "electionOperation",
-          component: ElectionOperation
-        },
-        {
-          path: "/usertype_list",
-          name: "usertypeList",
-          component: UserTypeList,
-        },
-        {
-          path: "/add_designation",
-          name: "add_designation",
-          component: CRUDDesignation,
-        },
-        {
-          path: "/add_country",
-          name: "addCountry",
-          component: CRUDCountry,
-        },
-        {
-          path: "/add_company",
-          name: "addCompany",
-          component: CRUDCompany,
-        },
-        
-      ],
-    },
-    {
-      path: '/:pathMatch(.*)*',
-      name: "404",
-      component: NotFound,
-    }
-  ],
+  history: createWebHistory(),
+  routes,
 });
 
 export default router;
