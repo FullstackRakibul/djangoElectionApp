@@ -11,10 +11,10 @@ const selectedKeys = ref<string[]>(['1']);
 const openKeys = ref<string[]>([]);
 
 watch(
-  () => router.currentRoute.value.path,
+  () => router.currentRoute.value.fullPath,
   (newPath) => {
     // Set selected keys dynamically based on the route
-    selectedKeys.value = [newPath];
+    //selectedKeys.value = [newPath];
     // Optionally, set openKeys for submenu collapsing/expanding logic
   },
   { immediate: true }

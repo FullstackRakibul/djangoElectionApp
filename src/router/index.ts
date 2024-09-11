@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import UserTypeList from '@/views/users/UserTypeList.vue';
 import ElectionOperation from '@/views/core/ElectionOperation.vue';
 
 import Login from '@/layouts/auth/Login.vue';
 import PrivateLayout from '@/layouts/PrivateLayout.vue';
 import NotFound from '@/layouts/404.vue';
+import UserTypeList from '@/views/users/UserTypeList.vue';
 
 const routes = [
   {
@@ -24,27 +24,27 @@ const routes = [
       {
         path: 'usertype_list',
         name: 'usertypeList',
-        component: ()=>import("@/views/users/UserTypeList.vue"),
+        component: UserTypeList,
       },
       {
         path: 'add_designation',
         name: 'addDesignation',
-        component: ()=>import("@/views/forms/DesignationForm.vue"),
+        component: () => import("@/views/forms/DesignationForm.vue"),
       },
       {
         path: 'add_country',
         name: 'addCountry',
-        component: ()=>import ("@/views/forms/CountryForm.vue"),
+        component: () => import("@/views/forms/CountryForm.vue"),
       },
       {
         path: 'add_company',
         name: 'addCompany',
-        component: ()=>import('@/views/forms/CompanyForm.vue'),
+        component: () => import('@/views/forms/CompanyForm.vue'),
       },
       {
         path: 'add_address',
         name: 'addAddress',
-        component: ()=>import('@/views/forms/AddressForm.vue'),
+        component: () => import('@/views/forms/AddressForm.vue'),
       },
       {
         path: 'add_division',
@@ -59,7 +59,7 @@ const routes = [
       {
         path: 'add_district',
         name: 'addDistrict',
-        component: () => import('@/views/forms/DesignationForm.vue'),
+        component: () => import('@/views/forms/DistrictForm.vue'),
       },
       {
         path: 'add_upzillah',
