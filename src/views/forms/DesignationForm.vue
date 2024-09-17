@@ -1,8 +1,5 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
-
-
-
 interface DesignationForm {
   designation_name :string,
   designation_name_ban: string
@@ -29,7 +26,7 @@ const onFinishFailed = (errorInfo:any)=>{
   <a-card
   title="Create Designation"
   >
-  <a-form
+  <!-- <a-form
   :model="designationForm"
   :label-col="{ span: 8 }"
   :wrapper-col="{ span: 16 }"
@@ -43,13 +40,13 @@ const onFinishFailed = (errorInfo:any)=>{
     >
       <a-input v-model:value="designationForm.designation_name" />
     </a-form-item>
-    <!-- <a-form-item
+    <a-form-item
     name="designation_name_ban",
     label="designation_name_ban"
     >
       <a-input v-model:value="designationForm.designation_name_ban" />
-    </a-form-item> -->
-  </a-form>
+    </a-form-item>
+  </a-form> -->
   </a-card>
 
 </template>

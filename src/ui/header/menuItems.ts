@@ -27,8 +27,8 @@ const items = ref([
     children: [
       {
         key: '2-1',
-        label: 'Add User',
-        keyPath: '/add_user',  // Route for adding a user
+        label: 'Users',
+        keyPath: '/usertype_list',  // Route for adding a user
       },
       {
         key: '2-2',
@@ -36,11 +36,11 @@ const items = ref([
         keyPath: '/add_designation',  // Route for user type list
       },
       {
-        key: '2-2',
+        key: '2-3',
         label: 'User Address',
         keyPath: '/add_address',  // Route for user type list
       },
-      
+
     ],
   },
   {
@@ -53,11 +53,11 @@ const items = ref([
         label: 'Country',
         keyPath: '/add_country',
       },
-      {
-        key: '3-2',
-        label: 'Company',
-        keyPath: '/add_company',
-      },
+      // {
+      //   key: '3-2',
+      //   label: 'Company',
+      //   keyPath: '/add_company',
+      // },
       {
         key: '3-3',
         label: 'Division',
@@ -103,12 +103,12 @@ const items = ref([
       {
         key: '4-1',
         label: 'Checking and Evaluation',
-        keyPath: '/operation-dashboard', 
+        keyPath: '/operation-dashboard',
       },
       {
         key: '4-2',
         label: 'Audit Result',
-        keyPath: '/audit-result',  
+        keyPath: '/audit-result',
       },
     ],
   },

@@ -1,30 +1,41 @@
 import { electionHttpJson } from "@/utils/axios/base.Http";
 
-export const getUserInfo = ()=>{
+export const getUserInfo = () => {
 
 };
 
-export const getAuthToken = ()=>{
-  return localStorage.getItem('token')??"";
+export const getAuthToken = () => {
+  return localStorage.getItem('token') ?? "";
 }
 
-export const countryAddService = async(data:any)=>{
-    return await electionHttpJson().post("/common/country_list/", data);
+export const countryAddService = async (data: any) => {
+  return await electionHttpJson().post("/common/country_list/", data);
 }
 
-export const getCountryListService = async()=>{
+export const getCountryListService = async () => {
   return await electionHttpJson().get("/common/country_list");
 }
 
-export const getCompanyListService = async()=>{
+export const getCompanyListService = async () => {
   return await electionHttpJson().get("/common/country_list");
 }
 
 
-export const updateCountryService = async (payload:any, id:any)=>{
-  return await electionHttpJson().put("/common/country_list/?pk="+id, payload);
+export const updateCountryService = async (payload: any, id: any) => {
+  return await electionHttpJson().put("/common/country_list/?pk=" + id, payload);
 }
 
-export const deleteCountryService = async (id:any)=>{
-  return await electionHttpJson().delete("/common/country_list/?pk="+id);
+export const deleteCountryService = async (id: any) => {
+  return await electionHttpJson().delete("/common/country_list/?pk=" + id);
+}
+
+
+// division services..
+
+export const getDivisionListService = async () => {
+  return await electionHttpJson().get("/common/division_list");
+}
+
+export const DivisionService = async (values: any) => {
+  return await electionHttpJson().get("/common/division_list/", values);
 }

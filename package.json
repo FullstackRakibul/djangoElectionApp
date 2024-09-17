@@ -11,6 +11,7 @@
     "type-check": "vue-tsc --build --force"
   },
   "dependencies": {
+    "@fontsource/hind-siliguri": "^5.1.0",
     "ant-design-vue": "^4.2.3",
     "axios": "^1.7.5",
     "pinia": "^2.1.7",

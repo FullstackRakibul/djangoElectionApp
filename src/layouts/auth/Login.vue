@@ -35,6 +35,7 @@ import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { electionHttpJson } from '@/utils/axios/base.Http'; 
 import axios from 'axios';
+import { message } from 'ant-design-vue';
 
 interface FormState {
   phone: string;
@@ -58,22 +59,26 @@ const onFinish = async () => {
 
     console.log(data);
     const response = await axiosInstance.post('/account/user_login/', data);
-    console.log(response);
+    console.log("response data :",response.data);
     if (response.data.access_token) {
       const token = response.data.access_token;
       localStorage.setItem('token', token);
       router.push({ name: 'electionOperation' });
-    } else {
+    }else {
       console.error('Login failed: No token returned');
+      message.error('Invalid Credentials !!!')
     }
 
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.error('Axios Error:', error.response?.data || error.message);
+      message.error('Request Error !!!')
     } else if (error instanceof Error) {
       console.error('Error:', error.message);
+      message.error('Database Error !!!')
     } else {
       console.error('Unexpected Error:', error);
+      message.error('Unexpected Error !!!')
     }
   }
 };

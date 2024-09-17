@@ -10,7 +10,7 @@ const routes = [
   {
     path: '/login',
     name: 'login',
-    component: Login,
+    component: () => import("@/layouts/auth/Login.vue"),
   },
   {
     path: '/',
@@ -19,12 +19,12 @@ const routes = [
       {
         path: '',
         name: 'electionOperation',
-        component: ElectionOperation,
+        component: () => import("@/views/core/ElectionOperation.vue"),
       },
       {
         path: 'usertype_list',
         name: 'usertypeList',
-        component: UserTypeList,
+        component: () => import("@/views/users/UserTypeList.vue"),
       },
       {
         path: 'add_designation',
@@ -76,12 +76,12 @@ const routes = [
         name: 'addWard',
         component: () => import('@/views/forms/WardForm.vue'),
       },
-      // Operations Routes
-      {
-        path: 'operation-dashboard',
-        name: 'operationDashboard',
-        component: () => import('@/views/operations/OperationDashboard.vue'),
-      },
+      // // Operations Routes
+      // {
+      //   path: 'operation-dashboard',
+      //   name: 'operationDashboard',
+      //   component: () => import('@/views/operations/OperationDashboard.vue'),
+      // },
       {
         path: 'audit-result',
         name: 'auditResult',

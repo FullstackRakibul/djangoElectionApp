@@ -3,23 +3,22 @@ import { ref, watch  } from 'vue';
 import { useRouter } from 'vue-router';
 import type { MenuProps } from 'ant-design-vue';
 import items from "./menuItems"
+
+
 // Router instance
 const router = useRouter();
 
 // Menu state
 const selectedKeys = ref<string[]>(['1']);
 const openKeys = ref<string[]>([]);
-
+// Watch for route changes to update selected/open keys
 watch(
-  () => router.currentRoute.value.fullPath,
+  () => router.currentRoute.value.path,
   (newPath) => {
-    // Set selected keys dynamically based on the route
-    //selectedKeys.value = [newPath];
-    // Optionally, set openKeys for submenu collapsing/expanding logic
+    selectedKeys.value = [newPath]; // Update the selected keys
   },
   { immediate: true }
 );
-
 // Handle menu item click
 const handleClick: MenuProps['onClick'] = (menuInfo) => {
   const clickedItem = items.value
