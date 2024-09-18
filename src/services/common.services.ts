@@ -33,9 +33,9 @@ export const deleteCountryService = async (id: any) => {
 // division services..
 
 export const getDivisionListService = async () => {
-  return await electionHttpJson().get("/common/division_list");
+  return await electionHttpJson().get("/common/division_list/");
 }
 
 export const DivisionService = async (values: any) => {
-  return await electionHttpJson().get("/common/division_list/", values);
+  return await electionHttpJson().post("/common/division_list/", values);
 }

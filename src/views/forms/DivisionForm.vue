@@ -5,50 +5,77 @@ import { message } from "ant-design-vue";
 import {
   DivisionService,
   getCountryListService,
+  getDivisionListService,
 } from "../../services/common.services";
 
-interface formState {
+interface division {
   division_name: string;
   division_name_ban: string;
   country_id: number;
 }
+
 
 interface Country {
   id: number;
   country_name: string;
 }
 
-const divisionForm = reactive<formState>({
+const divisionForm = reactive<division>({
   division_name: "",
   division_name_ban: "",
   country_id: 0,
 });
 
-const countryList = ref<Country[]>([]); 
+const countryList = ref<Country[]>([]);
+const divisionList = ref<division[]>([]);
+
+
+
+// Fetch country list on component mount
+onMounted(() => {
+  getCountryList();
+  getDivisionList();
+});
+
+
+
+const getDivisionList = async () => {
+  try{
+    const response = await getDivisionListService();
+    if (response.status==200){
+      divisionList.value= response.data.data;
+      console.log("Division List Data : ",response.data.data);
+    }else{
+      message.warning("Division List Response Error !")
+    }
+
+  }catch(error){
+    message.error("Getting Error from fetching the division List data !!");
+  }
+}
 
 const getCountryList = async () => {
   try {
-    const res = await getCountryListService();
-    if (res.status === 200) {
-      countryList.value = res.data.data;
+    const response = await getCountryListService();
+    if (response.status === 200) {
+      countryList.value = response.data.data;
     }
   } catch (err) {
     message.error("Failed to fetch country list");
   }
 };
 
-// Fetch country list on component mount
-onMounted(() => {
-  getCountryList();
-});
+
 
 const onSubmit = async (values: any) => {
   console.log("Submitted Data:", values);
   try {
     const res = await DivisionService(values);
-    if (res.status === 201) {
-      message.success("Successfully created division");
+    console.log("response from request : ", res);
+    if (res.status === 200) {
+      message.success("Successfully created division !");
       resetForm();
+      await getDivisionList();
     }
   } catch (er) {
     message.error("Internal server error");
@@ -60,6 +87,30 @@ const resetForm = () => {
   divisionForm.division_name_ban = "";
   divisionForm.country_id = 0;
 };
+
+
+
+// fetch table data ...
+
+const divisionListColumns = [
+  {
+    title : 'Division Name',
+    dataIndex :'division_name'
+  },
+  {
+    title : 'বিভাগের নাম',
+    dataIndex :'division_name_ban'
+  },
+  {
+    title : 'Country',
+    dataIndex :'country_id'
+  },
+  {
+    title: 'Action',
+    key: "actions"
+  },
+]
+
 </script>
 
 <template>
@@ -127,7 +178,11 @@ const resetForm = () => {
 
   <!-- Division List Table -->
   <a-card title="List of Divisions" class="mt-6 shadow-md">
-    <a-table :data-source="[]" :pagination="false">
+    <a-table 
+    :data-source=divisionList 
+    :columns="divisionListColumns"
+    :pagination="false">
+    rowKey="id"
       <!-- Add Table Columns Here -->
     </a-table>
   </a-card>
