@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, Ref } from 'vue';
+import { ref } from 'vue';
 import { Form, Input, Button, InputNumber, message } from 'ant-design-vue';
 
 // Define types for form and candidate
@@ -14,7 +14,7 @@ interface FormState {
 }
 
 // Initialize form with explicit type
-const form: Ref<FormState> = ref({
+const form: <FormState> = ref({
   centerId: '',
   votes: [],
 });
