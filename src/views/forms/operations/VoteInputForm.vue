@@ -46,22 +46,14 @@ const handleSubmit = () => {
     <a-form layout="vertical" @submit.prevent="handleSubmit">
       <!-- Voting Center Selection -->
       <a-form-item label="Voting Center ID" required>
-        <a-input
-          v-model:value="form.value.centerId"
-          placeholder="Enter center ID"
-          class="w-full"
-        />
+        <a-input v-model:value="form.value.centerId" placeholder="Enter center ID" class="w-full" />
       </a-form-item>
 
       <!-- Candidate Vote Counts -->
       <div v-for="candidate in candidates" :key="candidate.id" class="mb-4">
         <a-form-item :label="`${candidate.name} (${candidate.symbol})`" required>
-          <a-input-number
-            v-model:value="form.value.votes.find(v => v.candidateId === candidate.id).count"
-            placeholder="Enter vote count"
-            min="0"
-            class="w-full"
-          />
+          <a-input-number v-model:value="form.value.votes.find(v => v.candidateId === candidate.id).count"
+            placeholder="Enter vote count" min="0" class="w-full" />
         </a-form-item>
       </div>
 

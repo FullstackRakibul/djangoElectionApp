@@ -1,10 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import ElectionOperation from '@/views/core/ElectionOperation.vue';
-
-import Login from '@/layouts/auth/Login.vue';
 import PrivateLayout from '@/layouts/PrivateLayout.vue';
 import NotFound from '@/layouts/404.vue';
-import UserTypeList from '@/views/users/UserTypeList.vue';
+
 
 const routes = [
   {
@@ -18,8 +15,8 @@ const routes = [
     children: [
       {
         path: '',
-        name: 'electionOperation',
-        component: () => import("@/views/core/ElectionOperation.vue"),
+        name: 'dashboardTabSwitcher',
+        component: () => import("@/views/core/dashboard/TabSwitcher/DashboardTabSwitcher.vue"),
       },
       {
         path: 'usertype_list',
