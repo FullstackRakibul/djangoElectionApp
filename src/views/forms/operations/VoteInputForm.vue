@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<!-- <script lang="ts" setup>
 import { ref } from 'vue';
 import { Form, Input, Button, InputNumber, message } from 'ant-design-vue';
 
@@ -38,8 +38,8 @@ const handleSubmit = () => {
     message.error('Please fill out all fields');
   }
 };
-</script>
-
+</script> -->
+<!-- 
 <template>
   <div class="max-w-md mx-auto p-6 bg-white shadow rounded-lg">
     <h2 class="text-2xl font-semibold mb-4">Vote Input Form</h2>
@@ -69,4 +69,4 @@ const handleSubmit = () => {
 
 <style scoped>
 /* Custom styles if needed */
-</style>
+</style> -->

@@ -5,8 +5,6 @@ import '@/assets/base.css'
 </script>
 
 <template>
-
-  
   <Private layout>
     <RouterView />
   </Private>

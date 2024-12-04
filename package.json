@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@fontsource/hind-siliguri": "^5.1.0",
+    "@mdi/font": "^7.4.47",
     "ant-design-vue": "^4.2.3",
     "axios": "^1.7.5",
     "pinia": "^2.2.6",
@@ -31,6 +32,8 @@
     "unplugin-vue-components": "^0.27.0",
     "vite": "^5.2.8",
     "vite-plugin-vue-devtools": "^7.0.25",
-    "vue-tsc": "^2.0.11"
+    "vite-plugin-vuetify": "^2.0.4",
+    "vue-tsc": "^2.0.11",
+    "vuetify": "^3.7.5"
   }
 }
