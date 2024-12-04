@@ -1,5 +1,5 @@
 <template>
-  <v-card loading title="12 Active Custing...">
+  <v-card class="mx-auto" loading title="12 Active Custing...">
     <template v-slot:actions>
       <v-btn 
       prepend-icon="mdi-poll" 
