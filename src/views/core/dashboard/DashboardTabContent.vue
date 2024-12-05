@@ -1,5 +1,5 @@
 <template>
- <section class="app-dashboard">
+ <section >
     <v-row  justify="center" dense>
       <v-col cols="22">
        <ConstituentActiveList/>

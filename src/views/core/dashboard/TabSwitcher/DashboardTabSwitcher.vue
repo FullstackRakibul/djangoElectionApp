@@ -1,9 +1,9 @@
 <template>
   <div class="tab-container">
     <!-- SVG Design -->
-    <div class="svg-header">
+    <!-- <div class="svg-header">
       <img src="@/assets/bangladesh.svg" alt="SVG Design" class="header-svg" />
-    </div>
+    </div> -->
 
     <!-- Tab Buttons -->
     <div class="tab-buttons">

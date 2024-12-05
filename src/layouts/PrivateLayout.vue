@@ -26,8 +26,8 @@ watchEffect(() => {
       <SideBarMenu />
     </a-layout-sider>
     <a-layout>
-      <a-layout-content :style="{ margin: '24px 16px', padding: '12px', background: '#fff', overflow: 'auto' }">
-        <div style="padding: 10px; min-height:fit-content;">
+      <a-layout-content :style="{ margin: '8px 10px', padding: '5px', background: '#fff', overflow: 'auto' }">
+        <div style="min-height:fit-content;">
           <RouterView /> <!-- Main content area -->
         </div>
       </a-layout-content>
