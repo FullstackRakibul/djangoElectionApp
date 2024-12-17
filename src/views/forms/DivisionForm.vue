@@ -42,6 +42,7 @@ onMounted(() => {
 const getDivisionList = async () => {
   try{
     const response = await getDivisionListService();
+    divisionList.value= response.data.data;
     if (response.status==200){
       divisionList.value= response.data.data;
       console.log("Division List Data : ",response.data.data);

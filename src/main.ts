@@ -8,6 +8,7 @@ import '@mdi/font/css/materialdesignicons.css'; // Import MDI font icons
 import App from './App.vue'
 import router from './router'
 
+
 const app = createApp(App)
 
 

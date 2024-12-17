@@ -13,12 +13,17 @@ export const countryAddService = async (data: any) => {
 }
 
 export const getCountryListService = async () => {
-  return await electionHttpJson().get("/common/country_list");
-}
+  try {
+    const axiosInstance = electionHttpJson(); // Get axios instance with proper headers
+    const response = await axiosInstance.get("/common/country/");
 
-export const getCompanyListService = async () => {
-  return await electionHttpJson().get("/common/country_list");
-}
+    console.log("Country List Response:", response.data);
+    return response.data; // Return the response data
+  } catch (error) {
+    console.error("Error fetching country list:", error);
+    throw error; // Rethrow error for handling in the calling component
+  }
+};
 
 
 export const updateCountryService = async (payload: any, id: any) => {
@@ -33,7 +38,9 @@ export const deleteCountryService = async (id: any) => {
 // division services..
 
 export const getDivisionListService = async () => {
-  return await electionHttpJson().get("/common/division_list/");
+  const apiInstance = electionHttpJson();
+  const data = apiInstance.get("/common/division")
+  return data;
 }
 
 export const DivisionService = async (values: any) => {

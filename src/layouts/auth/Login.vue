@@ -63,7 +63,10 @@ const onFinish = async () => {
     if (response.data.access_token) {
       const token = response.data.access_token;
       localStorage.setItem('token', token);
-      router.push({ name: 'electionOperation' });
+      localStorage.setItem('access_token', response.data.access_token);
+      localStorage.setItem('refresh_token', response.data.refresh_token);
+
+      router.push({ name: 'dashboardTabSwitcher' });
     }else {
       console.error('Login failed: No token returned');
       message.error('Invalid Credentials !!!')
@@ -75,6 +78,7 @@ const onFinish = async () => {
       message.error('Request Error !!!')
     } else if (error instanceof Error) {
       console.error('Error:', error.message);
+      console.log(error.message);
       message.error('Database Error !!!')
     } else {
       console.error('Unexpected Error:', error);

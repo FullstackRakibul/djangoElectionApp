@@ -2,6 +2,8 @@
 import { onMounted, reactive, ref } from 'vue';
 import { countryAddService, deleteCountryService, getCountryListService, updateCountryService } from "../../services/common.services";
 import { message } from 'ant-design-vue';
+import axios from 'axios';
+import { electionHttpJson } from '@/utils/axios/base.Http';
 
 interface FormState {
   country_name: string;
@@ -78,18 +80,28 @@ const resetForm = () => {
   countryForm.country_name = "";
   countryForm.country_name_ban = ""
 }
-
+// Fetch country list function
 const getCountryList = async () => {
   try {
-    const res = await getCountryListService();
-    if (res.status === 200) {
-      countryList.value = res.data.data;
-    }
-  } catch (err) {
-    message.error("Internal server error");
-  }
-}
+    // Call the service to fetch country list
+    //const response = await getCountryListService();
+    const axiosInstance = electionHttpJson();
+    const response = await axiosInstance.get('/common/country/');
 
+    // Check if response is successful and data exists
+    if (response && response.data) {
+      countryList.value = response.data; // Update the country list
+      console.log("Country Data:", countryList.value);
+    } else {
+      console.warn("No countries returned from the API");
+      countryList.value = []; // Fallback empty array
+    }
+  } catch (error) {
+    console.error("Failed to fetch country list:", error);
+    
+    message.error("Internal server error. Please try again later.");
+  }
+};
 
 const columns = [
   {

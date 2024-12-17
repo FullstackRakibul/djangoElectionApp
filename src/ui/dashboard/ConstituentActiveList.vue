@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto w-100" style="overflow-x: hidden;">
+  <v-card class="mx-auto w-100">
     <!-- Main Title Section -->
     <v-toolbar>
       <v-toolbar-title>আসন সমূহের লিষ্ট</v-toolbar-title>
@@ -23,9 +23,9 @@
         <!-- Center Content -->
         <v-list-item-content class="d-flex flex-row flex-wrap justify-space-between align-center">
           <v-list-item-title class="mr-4">{{ item.name }}</v-list-item-title>
-            <v-list-item-subtitle class="mr-4">
-              <div v-html="item.subtitle"></div>
-            </v-list-item-subtitle>
+          <v-list-item-subtitle class="mr-4">
+            <div v-html="item.subtitle"></div>
+          </v-list-item-subtitle>
             <v-list-item-title>{{ item.title }}</v-list-item-title>
         </v-list-item-content>
 
