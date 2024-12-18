@@ -5,7 +5,7 @@ import SideBarMenu from '@/ui/header/SideBarMenu.vue';
 import "@/assets/main.css"
 
 
-const collapsed = ref<boolean>(true);
+const collapsed = ref<boolean>(false);
 
 // Router instance
 const router = useRouter();
@@ -21,7 +21,7 @@ watchEffect(() => {
 
 <template>
   <a-layout style="min-height: 100vh;">
-    <a-layout-sider v-model:collapsed="collapsed"  :trigger="false" :collapsed-width="80" width="200"
+    <a-layout-sider v-model:collapsed="collapsed" collapsible   
       style="background-color: white;">
       <SideBarMenu />
     </a-layout-sider>

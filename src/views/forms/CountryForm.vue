@@ -15,7 +15,7 @@ const isEditing = ref(false);
 const editingCountryId = ref(0);
 const isDeleteModalOpen = ref(false);
 const deletingCountryId = ref(0);
-
+const countries = ref([]);
 const countryForm = reactive<FormState>({
   country_name: '',
   country_name_ban: '',
@@ -85,20 +85,22 @@ const getCountryList = async () => {
   try {
     // Call the service to fetch country list
     //const response = await getCountryListService();
-    const axiosInstance = electionHttpJson();
-    const response = await axiosInstance.get('/common/country/');
-
+    //const axiosInstance = electionHttpJson();
+    //const response = await axiosInstance.get('/common/country/');
+    console.log("TEST....")
+    countries.value = await getCountryListService();
+    //console.log("Service data Fetch :::: ",countries.value);
     // Check if response is successful and data exists
-    if (response && response.data) {
-      countryList.value = response.data; // Update the country list
-      console.log("Country Data:", countryList.value);
-    } else {
-      console.warn("No countries returned from the API");
-      countryList.value = []; // Fallback empty array
-    }
+    // if (response && response.data) {
+    //   countryList.value = response.data; // Update the country list
+    //   console.log("Country Data:", countryList.value);
+    // } else {
+    //   console.warn("No countries returned from the API");
+    //   countryList.value = []; // Fallback empty array
+    // }
   } catch (error) {
     console.error("Failed to fetch country list:", error);
-    
+
     message.error("Internal server error. Please try again later.");
   }
 };

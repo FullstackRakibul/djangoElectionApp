@@ -1,4 +1,5 @@
 import { electionHttpJson } from "@/utils/axios/base.Http";
+import { httpServiceCountryList } from "./country.services";
 
 export const getUserInfo = () => {
 
@@ -13,16 +14,10 @@ export const countryAddService = async (data: any) => {
 }
 
 export const getCountryListService = async () => {
-  try {
-    const axiosInstance = electionHttpJson(); // Get axios instance with proper headers
-    const response = await axiosInstance.get("/common/country/");
 
-    console.log("Country List Response:", response.data);
-    return response.data; // Return the response data
-  } catch (error) {
-    console.error("Error fetching country list:", error);
-    throw error; // Rethrow error for handling in the calling component
-  }
+  const res = httpServiceCountryList.get("/common/country/");
+  console.log("service Check Response ::::", res)
+  return await httpServiceCountryList.get("/common/country/");
 };
 
 
@@ -39,7 +34,7 @@ export const deleteCountryService = async (id: any) => {
 
 export const getDivisionListService = async () => {
   const apiInstance = electionHttpJson();
-  const data = apiInstance.get("/common/division")
+  const data = apiInstance.get("/common/division/")
   return data;
 }
 
