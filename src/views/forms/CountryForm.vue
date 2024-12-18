@@ -22,7 +22,9 @@ const countryForm = reactive<FormState>({
 });
 const onFinish = async (values: any) => {
   if (isEditing.value) {
-    updateCountry(values, editingCountryId.value);
+
+    console.log("Create Country data",values)
+    //updateCountry(values, editingCountryId.value);
   } else {
     await saveCountry(values)
   }
@@ -33,6 +35,8 @@ const onFinish = async (values: any) => {
 const saveCountry = async (values: FormState) => {
   try {
     const res = await countryAddService(values);
+
+    console.log("Added respobse :",res.data)
     if (res.status === 201) {
       message.success("Successfully created country");
       resetForm();
@@ -80,24 +84,15 @@ const resetForm = () => {
   countryForm.country_name = "";
   countryForm.country_name_ban = ""
 }
+
+
+
 // Fetch country list function
 const getCountryList = async () => {
   try {
-    // Call the service to fetch country list
-    //const response = await getCountryListService();
-    //const axiosInstance = electionHttpJson();
-    //const response = await axiosInstance.get('/common/country/');
-    console.log("TEST....")
-    countries.value = await getCountryListService();
-    //console.log("Service data Fetch :::: ",countries.value);
-    // Check if response is successful and data exists
-    // if (response && response.data) {
-    //   countryList.value = response.data; // Update the country list
-    //   console.log("Country Data:", countryList.value);
-    // } else {
-    //   console.warn("No countries returned from the API");
-    //   countryList.value = []; // Fallback empty array
-    // }
+   const response = await getCountryListService();
+   console.log("RESPONSE FROM COUNTRY COMPONENT :p", response.data);
+   countryList.value=response.data.data
   } catch (error) {
     console.error("Failed to fetch country list:", error);
 

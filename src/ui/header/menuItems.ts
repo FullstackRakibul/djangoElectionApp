@@ -65,8 +65,8 @@ const items = ref([
       },
       {
         key: '3-4',
-        label: 'CityCorporation',
-        keyPath: '/add_citycorporation',
+        label: 'District',
+        keyPath: '/add_district',
       },
       {
         key: '3-5',
@@ -75,8 +75,8 @@ const items = ref([
       },
       {
         key: '3-6',
-        label: 'District',
-        keyPath: '/add_district',
+        label: 'CityCorporation',
+        keyPath: '/add_citycorporation',
       },
       {
         key: '3-7',

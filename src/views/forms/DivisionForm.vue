@@ -3,9 +3,10 @@ import "@/assets/main.css";
 import { reactive, ref, onMounted } from "vue";
 import { message } from "ant-design-vue";
 import {
-  DivisionService,
+  
   getCountryListService,
   getDivisionListService,
+  postDivisionService,
 } from "../../services/common.services";
 
 interface division {
@@ -18,6 +19,7 @@ interface division {
 interface Country {
   id: number;
   country_name: string;
+  country_name_ban:string;
 }
 
 const divisionForm = reactive<division>({
@@ -26,7 +28,7 @@ const divisionForm = reactive<division>({
   country_id: 0,
 });
 
-const countryList = ref<Country[]>([]);
+const countryList = ref(<Country[]>[]);
 const divisionList = ref<division[]>([]);
 
 
@@ -59,7 +61,10 @@ const getCountryList = async () => {
   try {
     const response = await getCountryListService();
     if (response.status === 200) {
+      console.log("Country List Data:", response.data.data);
       countryList.value = response.data.data;
+    }else {
+      message.warning("Division List Response Error!");
     }
   } catch (err) {
     message.error("Failed to fetch country list");
@@ -69,9 +74,10 @@ const getCountryList = async () => {
 
 
 const onSubmit = async (values: any) => {
-  console.log("Submitted Data:", values);
+  console.log("Submitted Data to create division :", values);
   try {
-    const res = await DivisionService(values);
+    const res = await postDivisionService(values);
+
     console.log("response from request : ", res);
     if (res.status === 200) {
       message.success("Successfully created division !");
@@ -95,6 +101,10 @@ const resetForm = () => {
 
 const divisionListColumns = [
   {
+    title : 'SL',
+    dataIndex :'id'
+  },
+  {
     title : 'Division Name',
     dataIndex :'division_name'
   },
@@ -104,7 +114,7 @@ const divisionListColumns = [
   },
   {
     title : 'Country',
-    dataIndex :'country_id'
+    dataIndex :'country'
   },
   {
     title: 'Action',

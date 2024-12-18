@@ -3,6 +3,7 @@ import { onMounted, reactive, ref } from 'vue';
 // /import { districtAddService, deletedistrictService, getdistrictListService, updatedistrictService } from "../../services/common.services";
 import { message } from 'ant-design-vue';
 import { electionHttpJson } from '@/utils/axios/base.Http';
+import {getDistrictListService} from "../../services/district.services"
 
 interface FormState {
   district_name: string;
@@ -99,20 +100,25 @@ const resetForm = () => {
 
 const getdistrictList = async () => {
   try {
-    // const res = electionHttpJson().get("/common/district/");
+    const res = await getDistrictListService()
+    if (res.status === 200) {
 
-    // console.log("Response ::",res);
-    // if (res.status === 200) {
-    //   districtList.value = res.data.data;
-    // }
+      console.log("District List : ", res.data.data) 
+      districtList.value = res.data.data;
+      message.success('District Data Fetch Success !!')
+    }
 
   } catch (err) {
-    message.error("Internal server error");
+    message.error("Internal server error")
   }
 }
 
 
 const columns = [
+  {
+    title: 'SL',
+    dataIndex: 'id',
+  },
   {
     title: 'district Name',
     dataIndex: 'district_name',
