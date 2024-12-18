@@ -40,20 +40,20 @@ onMounted(() => {
 
 
 const getDivisionList = async () => {
-  try{
+  try {
     const response = await getDivisionListService();
-    divisionList.value= response.data.data;
-    if (response.status==200){
-      divisionList.value= response.data.data;
-      console.log("Division List Data : ",response.data.data);
-    }else{
-      message.warning("Division List Response Error !")
+    if (response.status === 200) {
+      divisionList.value = response.data.data;
+      console.log("Division List Data:", response.data.data);
+    } else {
+      message.warning("Division List Response Error!");
     }
-
-  }catch(error){
-    message.error("Getting Error from fetching the division List data !!");
+  } catch (error) {
+    console.error("Error fetching division list:", error);
+    message.error("Error fetching division list data!");
   }
-}
+};
+
 
 const getCountryList = async () => {
   try {

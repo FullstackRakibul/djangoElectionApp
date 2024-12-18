@@ -111,11 +111,9 @@
 //   return baseHttp(baseUrl, headers);
 // };
 
-
 import axios, { type AxiosInstance } from "axios";
 import { getAuthToken } from "@/services/common.services";
 
-// Reusable base HTTP function
 export const baseHttp = (
   baseUrl: string,
   headers: Record<string, string> = {}
@@ -125,10 +123,10 @@ export const baseHttp = (
     timeout: 5000,
     headers: {
       "Content-Type": "application/json",
-      "Accept": "application/json",
+      Accept: "application/json",
       ...headers, // Add any additional headers
     },
-    withCredentials: true, // To include cookies for cross-origin requests
+    withCredentials: true, // For cookies
   });
 
   // Attach Authorization Token if available
@@ -139,8 +137,6 @@ export const baseHttp = (
 
   return axiosInstance;
 };
-
-
 
 // Election-specific HTTP function
 export const electionHttpJson = (): AxiosInstance => {
