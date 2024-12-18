@@ -2,9 +2,10 @@ import { ref, h } from 'vue';
 import {
   AuditOutlined,
   UsergroupAddOutlined,
-  ReconciliationOutlined,
+  SisternodeOutlined,
   DotChartOutlined,
   FundViewOutlined,
+  TableOutlined
 } from '@ant-design/icons-vue';
 
 const selectedKeys = ref<string[]>(['1']);
@@ -108,6 +109,44 @@ const items = ref([
       {
         key: '4-2',
         label: 'Audit Result',
+        keyPath: '/audit-result',
+      },
+    ],
+  },
+  {
+    key: '5',
+    icon: () => h(SisternodeOutlined),
+    label: 'Election',
+    children: [
+      {
+        key: '5-1',
+        label: 'Election Center',
+        keyPath: '/election-center',
+      },
+      {
+        key: '5-2',
+        label: 'Election Data',
+        keyPath: '/audit-result',
+      },
+      {
+        key: '5-3',
+        icon: () => h(TableOutlined),
+        label: 'Election Details',
+        keyPath: '/audit-result',
+      },
+      {
+        key: '5-4',
+        label: 'Election info',
+        keyPath: '/audit-result',
+      },
+      {
+        key: '5-5',
+        label: 'Election seat',
+        keyPath: '/audit-result',
+      },
+      {
+        key: '5-6',
+        label: 'Election type',
         keyPath: '/audit-result',
       },
     ],

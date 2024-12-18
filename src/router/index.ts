@@ -84,6 +84,11 @@ const routes = [
         name: 'auditResult',
         component: () => import('@/views/operations/AuditResult.vue'),
       },
+      {
+        path: 'election-center',
+        name: 'electionCenter',
+        component: () => import('@/views/core/election/electionCenter/electionCenter.vue'),
+      },
     ],
   },
   {

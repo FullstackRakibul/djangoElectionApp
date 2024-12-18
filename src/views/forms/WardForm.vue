@@ -30,6 +30,10 @@ onMounted(() => {
 
 const wordListColumns =[
   {
+    title : 'S/L',
+    dataIndex :'id'
+  },
+  {
     title : 'Word Name',
     dataIndex :'ward_name'
   },
