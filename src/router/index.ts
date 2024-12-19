@@ -73,12 +73,6 @@ const routes = [
         name: "addWard",
         component: () => import("@/views/forms/WardForm.vue"),
       },
-      // // Operations Routes
-      // {
-      //   path: 'operation-dashboard',
-      //   name: 'operationDashboard',
-      //   component: () => import('@/views/operations/OperationDashboard.vue'),
-      // },
       {
         path: "audit-result",
         name: "auditResult",
@@ -87,7 +81,37 @@ const routes = [
       {
         path: "election-center",
         name: "electionCenter",
-        component: () => import("@/views/core/election/electionCenter.vue"),
+        component: () => import("@/views/core/election/ElectionCenter.vue"),
+      },
+      {
+        path: "election-data",
+        name: "electionData",
+        component: () => import("@/views/core/election/ElectionData.vue"),
+      },
+      {
+        path: "election-details",
+        name: "electionDetails",
+        component: () => import("@/views/core/election/ElectionDetails.vue"),
+      },
+      {
+        path: "election-info",
+        name: "electionInfo",
+        component: () => import("@/views/core/election/ElectionInfo.vue"),
+      },
+      {
+        path: "election-seat",
+        name: "electionSeat",
+        component: () => import("@/views/core/election/ElectionSeat.vue"),
+      },
+      {
+        path: "election-type",
+        name: "electionType",
+        component: () => import("@/views/core/election/ElectionType.vue"),
+      },
+      {
+        path: "election-party",
+        name: "electionparty",
+        component: () => import("@/views/forms/ElectionPartyForm.vue"),
       },
     ],
   },

@@ -28,13 +28,14 @@ const handleLogout = () => {
 
 <template>
   <a-layout style="min-height: 100vh;">
-    <a-layout-sider v-model:collapsed="collapsed" collapsible   
-      style="background-color: white;">
+    <a-layout-sider v-model:collapsed="collapsed" collapsible style="background-color: white;">
       <SideBarMenu />
     </a-layout-sider>
     <a-layout>
-       <a-layout-header style="background: #fff; padding: 0; display: flex; justify-content: space-between; align-items: center;">
-        <div style="padding-left: 16px; font-family: 'Hind Siliguri', sans-serif;" class=" text-2xl ">নির্বাচনের হলফনামা</div>
+      <a-layout-header
+        style="background: #fff; padding: 0; display: flex; justify-content: space-between; align-items: center;">
+        <div style="padding-left: 16px; font-family: 'Hind Siliguri', sans-serif;" class=" text-2xl ">নির্বাচনী
+          ব্যবস্থাপনা ও ডিজিটাল হিসাব</div>
         <a-dropdown placement="bottomRight" trigger="hover">
           <template #overlay>
             <a-menu>
@@ -51,7 +52,7 @@ const handleLogout = () => {
           <RouterView /> <!-- Main content area -->
         </div>
       </a-layout-content>
-       <a-layout-footer style="text-align: center">
+      <a-layout-footer style="text-align: center">
         ElectionApp ©2024 Created by Tamal Mazumder
       </a-layout-footer>
     </a-layout>

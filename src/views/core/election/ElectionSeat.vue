@@ -1,0 +1,3 @@
+<template>
+  Election Seat ...
+</template>

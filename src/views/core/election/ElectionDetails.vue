@@ -1,0 +1,3 @@
+<template>
+  this is election details table ...
+</template>

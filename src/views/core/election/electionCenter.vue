@@ -68,7 +68,8 @@ const onFinish = async (values: electionCenterInterface) => {
     <!-- Create Voting Center Form -->
     <div class="bg-white p-6 rounded-lg shadow-md">
       <h2 class="text-lg font-semibold mb-4">Create Voting Center</h2>
-      <form @submit.prevent="onFinish(electionCenterFrom)" class="space-y-4">
+      <form :label-col="{ span: 8 }" :wrapper-col="{ span: 10 }" @submit.prevent="onFinish(electionCenterFrom)"
+        class="space-y-4">
         <div class="flex flex-col space-y-1">
           <label for="center_name" class="text-sm font-medium">Enter Center Name</label>
           <input id="center_name" v-model="electionCenterFrom.center_name" type="text"

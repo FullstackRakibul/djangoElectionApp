@@ -22,3 +22,10 @@ export interface upzillahListInterface {
   district: number;
   district_name?: string;
 }
+
+export interface electionPartyInterfcae {
+  party_name: string;
+  party_name_ban?: string;
+  party_symbol: string;
+  created_by?: string;
+}

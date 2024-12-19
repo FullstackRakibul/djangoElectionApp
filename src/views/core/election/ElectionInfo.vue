@@ -5,5 +5,5 @@
 
 <template>
 
-
+  Election info///
 </template>

@@ -9,11 +9,10 @@ export const getDistrictListService = async () => {
 export const getDistrictByIdService = async (pk: number) => {
   const apiInstance = electionHttpJson();
   try {
-    // Use query parameters for the request
     const response = await apiInstance.get("/common/district/", {
-      params: { pk }, // Pass the `pk` as a query parameter
+      params: { pk },
     });
-    return response.data; // Return the data
+    return response.data;
   } catch (error) {
     console.error("Error fetching district by ID:", error);
     throw error;
