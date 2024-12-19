@@ -39,11 +39,17 @@ const onFinish = async (values: electionPartyInterfcae) => {
     console.log(response.data)
     message.success("Party Created Complete")
     fetchElectionPartyList()
+    resetForm();
   } else {
     message.error("Party Create Failed !!!")
   }
 };
 
+const resetForm = () => {
+  ElectionPartyFrom.party_name = "";
+  ElectionPartyFrom.party_name_ban = "";
+  ElectionPartyFrom.party_symbol = "";
+}
 
 const onFinishFailed = (errorInfo: any) => {
   console.log('Failed:', errorInfo);
