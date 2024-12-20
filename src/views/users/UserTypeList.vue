@@ -1,18 +1,19 @@
 <template>
   <div class="flex justify-center items-center h-screen bg-gray-100 p-6">
-    <a-card title="User Type List" class="w-full max-w-4xl">
-      <a-table :columns="columns" :dataSource="userTypeData" rowKey="id" bordered pagination={false} />
+    <a-card title="ব্যবহারকারীর ধরণ" class="w-full max-w-4xl text-2xl">
+      <a-table :columns="columns" :dataSource="userTypeData" rowKey="id" bordered :pagination='false' />
     </a-card>
   </div>
 </template>
 
 <script lang="ts" setup>
+import {  UserTypeListService } from '@/services/GeneralUser.services';
 import { ref, onMounted } from 'vue';
-import { electionHttpJson } from '@/utils/axios/base.Http';
+
 
 const columns = [
   {
-    title: 'ID',
+    title: 'S/L',
     dataIndex: 'id',
     key: 'id',
     width: '10%',
@@ -36,9 +37,7 @@ const userTypeData = ref([]);
 
 const fetchUserTypes = async () => {
   try {
-    const axiosInstance = electionHttpJson();
-    const response = await axiosInstance.get('/account/usertype_list/');
-    console.log(response);
+    const response = await UserTypeListService()
     userTypeData.value = response.data.data;
   } catch (error) {
     console.error('Error fetching user types:', error);

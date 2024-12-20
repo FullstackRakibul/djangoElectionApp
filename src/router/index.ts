@@ -24,6 +24,11 @@ const routes = [
         component: () => import("@/views/users/UserTypeList.vue"),
       },
       {
+        path: "user_list",
+        name: "userList",
+        component: () => import("@/views/users/UserList.vue"),
+      },
+      {
         path: "add_designation",
         name: "addDesignation",
         component: () => import("@/views/forms/DesignationForm.vue"),

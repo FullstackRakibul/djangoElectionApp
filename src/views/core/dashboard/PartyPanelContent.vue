@@ -16,7 +16,7 @@
 <script lang="ts" setup>
 import { onMounted, reactive, ref } from 'vue';
 import { getElectionPartyService } from '@/services/common.services';
-import type { electionPartyInterfcae } from '@/interface/common.interface';
+import type { electionPartyInterfcae } from '@/interface/election.interface';
 import { message } from 'ant-design-vue';
 
 const ElectionPartyList = ref(<electionPartyInterfcae[]>[])

@@ -1,11 +1,9 @@
 import { electionHttpJson } from "@/utils/axios/base.Http";
 import { httpServiceCountryList } from "./country.services";
-import type {
-  Country,
-  electionPartyInterfcae,
-} from "@/interface/common.interface";
+import type { Country } from "@/interface/common.interface";
+import type { electionPartyInterfcae } from "@/interface/election.interface";
 
-export const getUserInfo = () => {};
+export const getUserInfo = () => { };
 
 export const getAuthToken = () => {
   return localStorage.getItem("token") ?? "";

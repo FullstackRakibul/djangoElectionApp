@@ -11,7 +11,7 @@ const router = useRouter();
 // Menu state
 const selectedKeys = ref<string[]>(['1']);
 const openKeys = ref<string[]>([]);
-// Watch for route changes to update selected/open keys
+
 watch(
   () => router.currentRoute.value.path,
   (newPath) => {
@@ -20,15 +20,45 @@ watch(
   { immediate: true }
 );
 // Handle menu item click
+// const handleClick: MenuProps['onClick'] = (menuInfo) => {
+//   const clickedItem = items.value
+//     .flatMap(item => item.children ? item.children : [item])  // Flatten the structure to find both parent and child items
+//     .find(item => item.key === menuInfo.key);  // Find the item by key
+
+//   if (clickedItem && clickedItem.keyPath) {
+//     router.push(clickedItem.keyPath);  // Navigate to the correct route
+//   }
+// };
+
+
+// Recursive function to find the clicked item in the menu structure
+const findMenuItem = (menuItems: typeof items.value, key: string): any => {
+  for (const item of menuItems) {
+    if (item.key === key) {
+      return item;
+    }
+
+    if (item.children) {
+      const found = findMenuItem(item.children, key);
+      if (found) return found;
+    }
+  }
+  return null; // Return null if no matching item is found
+};
+
+// Handle menu item click
 const handleClick: MenuProps['onClick'] = (menuInfo) => {
-  const clickedItem = items.value
-    .flatMap(item => item.children ? item.children : [item])  // Flatten the structure to find both parent and child items
-    .find(item => item.key === menuInfo.key);  // Find the item by key
+  const key = String(menuInfo.key); // Convert Key to string
+  const clickedItem = findMenuItem(items.value, key);
 
   if (clickedItem && clickedItem.keyPath) {
-    router.push(clickedItem.keyPath);  // Navigate to the correct route
+    router.push(clickedItem.keyPath); // Navigate to the correct route
+  } else {
+    console.error("Menu item not found or no keyPath specified");
   }
 };
+
+
 
 </script>
 

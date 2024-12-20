@@ -45,7 +45,7 @@ const activeTab = ref(0);
   'ক্যান্ডিডেট দেখুন',
   'আসন সমূহ দেখুন',
   'দল সমূহ দেখুন',
-  'স্থানীয় আলাপ সমূহ দেখুন',
+  'জাতীয় সংসদ নির্বাচন আচরণ বিধিমালা',
  ]
 
  const components = [
@@ -108,11 +108,11 @@ const activeTab = ref(0);
   durations and timing functions.
 */
 .slide-fade-enter-active {
-  transition: all 0.5s ease-out;
+  transition: all 0.3s ease-out;
 }
 
 .slide-fade-leave-active {
-  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+  transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
 }
 
 .slide-fade-enter-from,

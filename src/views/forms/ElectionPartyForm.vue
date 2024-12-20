@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { electionPartyInterfcae } from '@/interface/common.interface';
+import type { electionPartyInterfcae } from '@/interface/election.interface';
 import { getElectionPartyService, postElectionPartyService } from '@/services/common.services';
 import { message } from 'ant-design-vue';
 import { onMounted, reactive, ref } from 'vue';
@@ -103,9 +103,11 @@ const electionPartyListColumns = [
   </a-card>
   <a-card>
     <a-table :dataSource="ElectionPartyList" :columns="electionPartyListColumns" :pagination="true">
-      <template #actions="{ record }">
-        <a-button type="primary">Edit</a-button>
-        <a-button type="danger">Delete</a-button>
+      <template #actions="{ record }" class="" >
+        <a-space>
+          <a-button type="primary">Edit</a-button>
+          <a-button type="dashed">Report</a-button>
+        </a-space>
       </template>
     </a-table>
   </a-card>

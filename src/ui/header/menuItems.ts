@@ -32,7 +32,19 @@ const items = ref([
       {
         key: "2-1",
         label: "Users",
-        keyPath: "/usertype_list", // Route for adding a user
+        keyPath: "/usertype_list",
+        children: [
+          {
+            key: "2-1-1",
+            label: "User Type",
+            keyPath: "/usertype_list",
+          },
+          {
+            key: "2-1-2",
+            label: "User List",
+            keyPath: "/user_list",
+          },
+        ]
       },
       {
         key: "2-2",

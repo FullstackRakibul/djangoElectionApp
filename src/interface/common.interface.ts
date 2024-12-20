@@ -23,9 +23,13 @@ export interface upzillahListInterface {
   district_name?: string;
 }
 
-export interface electionPartyInterfcae {
-  party_name: string;
-  party_name_ban?: string;
-  party_symbol: string;
-  created_by?: string;
+export interface addressInterface {
+  line1: string,
+  division_id: number,
+  district_id: number,
+  upazila_id: number,
+  union_id: number,
+  ward_id: number,
+  city_corporation_id: number,
+  municipality_id: number
 }
