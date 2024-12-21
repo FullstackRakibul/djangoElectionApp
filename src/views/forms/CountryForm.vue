@@ -24,7 +24,7 @@ const onFinish = async (values: any) => {
   if (isEditing.value) {
 
     console.log("Create Country data",values)
-    //updateCountry(values, editingCountryId.value);
+    updateCountry(values, editingCountryId.value);
   } else {
     await saveCountry(values)
   }

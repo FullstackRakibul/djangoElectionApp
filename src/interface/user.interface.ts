@@ -5,7 +5,8 @@ export interface GeneralUserInterface {
   phone: string,
   email?: string,
   user_type: number,
-  party?: number
+  party?: number,
+  password?: string
 }
 
 export interface GeneralUserTypeInterface {

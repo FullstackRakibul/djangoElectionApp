@@ -38,6 +38,24 @@ export const UserListService = async (): Promise<GeneralUserInterface[]> => {
 
 }
 
+export const UserCreateService = async (values: GeneralUserInterface) => {
+  const apiInstance = electionHttpJson()
+  const payload = {
+
+    username: values.username,
+    password: values.password,
+    email: values.email,
+    phone: values.phone
+
+
+  }
+  const response = await apiInstance.post("/account/user/", payload)
+  return response
+
+}
+
+
+//user type
 export const UserTypeListService = async () => {
   const axiosInstance = electionHttpJson();
   const response = await axiosInstance.get('/account/usertype');

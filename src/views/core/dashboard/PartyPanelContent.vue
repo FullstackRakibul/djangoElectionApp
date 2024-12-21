@@ -43,21 +43,20 @@ onMounted(() => {
 const electionPartyListColumns = [
   {
     title: "Party Name",
-    dataIndex: "party_name"
+    dataIndex: "party_name",
+    align:"center"
   },
   {
     title: "পার্টি বা দলের নামে",
-    dataIndex: "party_name_ban"
+    dataIndex: "party_name_ban",
+    align:"center"
   },
   {
     title: "Symbol / প্রতীক",
-    dataIndex: "party_symbol"
+    dataIndex: "party_symbol",
+    align:"center"
   },
-  {
-    title: "Actions",
-    dataIndex: "actions",
-    slots: { customRender: "actions" },
-  },
+  
 
 ]
 
