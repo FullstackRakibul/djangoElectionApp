@@ -54,6 +54,19 @@ export const UserCreateService = async (values: GeneralUserInterface) => {
 
 }
 
+export const UpdateUserService = async (values: GeneralUserInterface, id: number) => {
+  try {
+    const apiInstance = electionHttpJson();
+    const response = await apiInstance.put(`/account/user/?pk=${id}`, values);
+    return response;
+  } catch (error: any) {
+    console.error('Error updating user:', error);
+    throw error;
+  }
+};
+
+
+
 
 //user type
 export const UserTypeListService = async () => {

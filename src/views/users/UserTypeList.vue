@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-center items-center h-screen bg-gray-100 p-6">
+  <div class="flex justify-center items-center bg-gray-100 p-6">
     <a-card title="ব্যবহারকারীর ধরণ" class="w-full max-w-4xl text-2xl">
       <a-table :columns="columns" :dataSource="userTypeData" rowKey="id" bordered :pagination='false' />
     </a-card>
