@@ -2,8 +2,6 @@
 import { onMounted, reactive, ref } from 'vue';
 import { countryAddService, deleteCountryService, getCountryListService, updateCountryService } from "../../services/common.services";
 import { message } from 'ant-design-vue';
-import axios from 'axios';
-import { electionHttpJson } from '@/utils/axios/base.Http';
 
 interface FormState {
   country_name: string;

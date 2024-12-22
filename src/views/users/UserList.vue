@@ -59,6 +59,9 @@ const columns = [
 ];
 
 const userListData = ref<GeneralUserInterface[]>([]);
+const isDeleteModalOpen = ref(false);
+const deletingCountryId = ref(0);
+
 
 const fetchUserList = async () => {
   try {
@@ -79,10 +82,12 @@ const onFormSubmit = async (values:GeneralUserInterface)=>{
   try{
     console.log("Submitted value",values)
     const response = await UserCreateService(values)
-    if(response.status===200){
+    console.log("response value ,",response)
+    if(response.statusText='Ok'){
       console.log("RESPONSE VALUE :",response)
+      userListData.value = response.data.data
       fetchUserList()
-      message.success(response.data.msg)
+      message.success(`${response.data.msg}`)
       
     }else{
       message.error(response.data.msg || "An error occurred");
@@ -104,8 +109,13 @@ const onFormSubmit = async (values:GeneralUserInterface)=>{
     console.error(error);
     
   }
-  
 }
+  const onEditButtonClick = async (values:GeneralUserInterface)=>{
+    isEditing.value = true;
+    userCreateFrom.username=values.username,
+    userCreateFrom.phone =values.phone,
+    userCreateFrom.email=values.email
+  }
 </script>
 
 <template>
@@ -130,9 +140,24 @@ const onFormSubmit = async (values:GeneralUserInterface)=>{
       </a-space>
     </a-form>
   </a-card>
-  <div class="flex flex-row justify-center items-top h-screen bg-gray-100 p-6">
+  <div class="flex flex-row justify-center items-top h-screen bg-gray-100 pt-3">
     <a-card title="ব্যবহারকারী গণ" class="w-full max-w-4xl text-2xl">
-      <a-table :columns="columns" :dataSource="userListData" rowKey="id" bordered :pagination='false' />
+      <a-table :columns="columns" :dataSource="userListData" rowKey="key" bordered :pagination='false'>
+        <template #bodyCell="{ text, record, index, column }">
+        <template v-if="column.key === 'actions'">
+          <div class="flex gap-4">
+            <a-button @click="onEditButtonClick(record)"
+              type="primary">Edit</a-button>
+            <a-button @click="() => {
+              isDeleteModalOpen = true;
+              deletingCountryId = record.id;
+            }" danger type="primary">Delete</a-button>
+          </div>
+        </template>
+      </template>
+      <template #title>List of Country</template>
+      <template #footer>Total Country</template>
+      </a-table>
     </a-card>
   </div>
 </template>
