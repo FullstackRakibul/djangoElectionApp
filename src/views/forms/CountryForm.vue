@@ -2,8 +2,6 @@
 import { onMounted, reactive, ref } from 'vue';
 import { countryAddService, deleteCountryService, getCountryListService, updateCountryService } from "../../services/common.services";
 import { message } from 'ant-design-vue';
-import axios from 'axios';
-import { electionHttpJson } from '@/utils/axios/base.Http';
 
 interface FormState {
   country_name: string;
@@ -24,7 +22,7 @@ const onFinish = async (values: any) => {
   if (isEditing.value) {
 
     console.log("Create Country data",values)
-    //updateCountry(values, editingCountryId.value);
+    updateCountry(values, editingCountryId.value);
   } else {
     await saveCountry(values)
   }
@@ -136,7 +134,7 @@ onMounted(() => {
 <template>
   <a-card>
     <a-form :model="countryForm" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 10 }" autocomplete="off"
-      @finish="onFinish" @finishFailed="onFinishFailed">
+      @finish="onFinish" @finishFailed="onFinishFailed"  >
       <a-form-item label="Country Name" name="country_name"
         :rules="[{ required: true, message: 'Please input Country Name!' }]">
         <a-input v-model:value="countryForm.country_name" />
@@ -155,21 +153,19 @@ onMounted(() => {
 
   
   <a-card>
-    <a-table :pagination="false" :columns="columns" :data-source="countryList" bordered>
+    <a-table :pagination="false" :columns="columns" :data-source="countryList" bordered size="small">
       <template #bodyCell="{ text, record, index, column }">
         <template v-if="column.key === 'actions'">
           <div class="flex gap-4">
             <a-button @click="onEditButtonClick(record.id, record.country_name, record.country_name_ban)"
-              type="primary">Edit</a-button>
+              type="primary" size="small">Edit</a-button>
             <a-button @click="() => {
               isDeleteModalOpen = true;
               deletingCountryId = record.id;
-            }" danger type="primary">Delete</a-button>
+            }" danger type="primary" size="small">Delete</a-button>
           </div>
         </template>
       </template>
-      <template #title>List of Country</template>
-      <template #footer>Total Country</template>
     </a-table>
   </a-card>
 

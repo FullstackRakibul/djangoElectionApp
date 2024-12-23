@@ -51,7 +51,7 @@ const items = [
     subtitle: `<span class="text-primary">Ali Connors</span> &mdash; Party Name One`, 
     title: "Bangladesh Demo Party 01",
     prependAvatar: "https://cdn.vuetifyjs.com/images/lists/1.jpg",
-    appendAvatar: "https://cdn.vuetifyjs.com/images/lists/2.jpg",
+    appendAvatar: "https://www.teachers.gov.bd/shared/contents/2020/July/2/photo/image_62415_1593658781.gif",
   },
   {
     name: "মোঃ করিম",

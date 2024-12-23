@@ -21,6 +21,19 @@ export default defineConfig({
     }),
 
   ],
+  css: {
+    preprocessorOptions: {
+      less: {
+        modifyVars: {
+          'primary-color': '#ff5f20',
+          'link-color': '#1DA57A',
+          'border-radius-base': '4px',
+
+        },
+        javascriptEnabled: true,
+      },
+    },
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))

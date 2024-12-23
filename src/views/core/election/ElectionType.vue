@@ -1,0 +1,3 @@
+<template>
+  election Type ....
+</template>

@@ -52,3 +52,10 @@ export interface electionType {
   election_type_name_ban?: string;
   created_by?: string;
 }
+
+export interface electionPartyInterfcae {
+  party_name: string;
+  party_name_ban?: string;
+  party_symbol: string;
+  created_by?: string;
+}
