@@ -21,18 +21,21 @@ export interface districtListInterface {
 
 
 export interface wordListInterface {
+  id?: number
   ward_name: string;
   ward_name_ban?: string;
   union: number;
 }
 
 export interface unionListInterface {
+  id?: number
   union_name: string;
   union_name_ban?: string;
   upazila: number;
 }
 
 export interface upzillahListInterface {
+  id?: number
   upazila_name: string;
   upazila_name_ban: string;
   district: number;
