@@ -52,6 +52,12 @@ export const getDistrictListService = async () => {
   return data;
 };
 
+export const getDistrictDetailsService = async (pk: number) => {
+  const apiInstance = electionHttpJson();
+  const data = await apiInstance.get("/common/district/?pk=" + pk);
+  return data;
+};
+
 export const postDivisionService = async (values: any) => {
   const apiInstance = electionHttpJson();
   const data = apiInstance.post("/common/division_list/", values);
