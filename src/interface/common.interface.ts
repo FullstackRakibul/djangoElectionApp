@@ -4,6 +4,22 @@ export interface Country {
   country_name_ban?: string;
 }
 
+export interface divisionListInterface {
+  id?: number;
+  division_name: string;
+  division_name_ban?: string;
+  country_id?: number;
+}
+
+
+export interface districtListInterface {
+  id?: number;
+  district_name: string,
+  district_name_ban?: string,
+  division?: number
+}
+
+
 export interface wordListInterface {
   ward_name: string;
   ward_name_ban?: string;

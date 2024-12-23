@@ -41,7 +41,14 @@ export const deleteCountryService = async (id: any) => {
 
 export const getDivisionListService = async () => {
   const apiInstance = electionHttpJson();
-  const data = apiInstance.get("/common/division");
+  const data = await apiInstance.get("/common/division");
+  return data;
+};
+// district services ...
+
+export const getDistrictListService = async () => {
+  const apiInstance = electionHttpJson();
+  const data = await apiInstance.get("/common/district");
   return data;
 };
 
