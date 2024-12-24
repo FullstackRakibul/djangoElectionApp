@@ -1,9 +1,10 @@
 <script lang="ts" setup>
 import type { addressInterface, districtListInterface, divisionListInterface, unionListInterface, upzillahListInterface, wordListInterface } from '@/interface/common.interface';
 import type { electionCenterInterface } from '@/interface/election.interface';
-import { getDistrictDetailsService, getDistrictListService, getDivisionListService, getUnionListService, getUpzillahListService, getWordListService } from '@/services/common.services';
+import { addressCreateService, getAddressListService, getDistrictDetailsService, getDistrictListService, getDivisionListService, getUnionListService, getUpzillahListService, getWordListService } from '@/services/common.services';
 import { electionCenterCreateService, electionCenterListDataService } from '@/services/election/election-center.services';
 import { message } from 'ant-design-vue';
+import { options } from 'node_modules/axios/index.cjs';
 import { computed, onMounted, reactive, ref } from 'vue'
 
 
@@ -48,6 +49,7 @@ onMounted(() => {
   getUpzillahList()
   getUnionList()
   getWordList()
+  getAddressList()
 })
 
 const electionCenterDataColumns = [
@@ -69,8 +71,10 @@ const electionCenterDataColumns = [
 
 // election create form 
 
-const onFinish = async (values: electionCenterInterface) => {
+const onFinishCenterCreateForm = async (values: electionCenterInterface) => {
   const response = await electionCenterCreateService(values);
+
+
   if (response.status === 201) {
     getElectionCenterData.value = response.data.data
     electionCenterListfetch()
@@ -90,6 +94,7 @@ const districtList = ref(<districtListInterface[]>[]);
 const upazilaList = ref(<upzillahListInterface[]>[]);
 const unionList = ref(<unionListInterface[]>[]);
 const wordList = ref(<wordListInterface[]>[]);
+const addresList = ref(<addressInterface[]>[]);
 
 const getDivisionList = async () => {
   try {
@@ -206,6 +211,59 @@ const filteredWordList = computed(() =>
 );
 
 
+
+// create full address
+
+const onFinishAddressCreateForm = async (values:addressInterface)=>{
+  try{
+    console.log("submitted value :",values)
+    const response = await addressCreateService(values)
+    console.log("Address create response :",response?.data)
+  }catch(error){
+    console.log(error)
+  }
+
+}
+
+
+// now get full address 
+
+const getAddressList = async () => {
+  try {
+    
+    const response = await getAddressListService()
+    console.log(response)
+    if (response.status === 200) {
+      addresList.value = response.data.data
+     
+    } else {
+      message.error("Address response error !!!")
+    }
+
+  } catch (error) {
+    console.log("Something went wrong on Address !!!")
+  }
+}
+
+
+const addressOptions = computed(() => {
+  return addresList.value.map((address) => {
+    const division = divisionList.value.find((d) => d.id === address.division_id);
+    const district = districtList.value.find((d) => d.id === address.district_id);
+    const upzillah = upazilaList.value.find((d) => d.id === address.upazila_id);
+
+    console.log("Address : ",division )
+    console.log("Address : ",district )
+    console.log("Address : ",upzillah )
+    return {
+      label: `${address.line1}, ${district?.district_name || 'Unknown District'}, ${division?.division_name || 'Unknown Division'}`,
+      value: address.id,
+    };
+  });
+});
+
+
+
 </script>
 
 <template>
@@ -214,7 +272,7 @@ const filteredWordList = computed(() =>
       <a-row :gutter="16" class="flex flex-row justify-between p-3">
         <a-col class="gutter-row" :span="12">
           <a-card>
-            <a-form @onFinish="onFinish" :model="electionCenterFrom" :label-col="{ span: 8 }"
+            <a-form @finish="onFinishCenterCreateForm" :model="electionCenterFrom" :label-col="{ span: 8 }"
               :wrapper-col="{ span: 16 }" labelAlign="left">
               <a-form-item label="Center Name" name="center_name">
                 <a-input v-mode:value="electionCenterFrom"></a-input>
@@ -227,11 +285,11 @@ const filteredWordList = computed(() =>
               </a-form-item>
               <a-form-item label="ঠিকানা নির্বাচন করুন" name="center_name_ban">
                 <a-select>
-                  <a-select-option key="" value=""></a-select-option>
+                  <a-select-option key="" v-model:value="electionCenterFrom.address" :options="addressOptions"></a-select-option>
                 </a-select>
               </a-form-item>
               <a-form-item>
-                <a-button type="primary" html-type="submit"> {{ isEditing ? 'Update' : 'Save' }}</a-button>
+                <a-button type="primary" html-type="submit"> Save</a-button>
               </a-form-item>
             </a-form>
           </a-card>
@@ -242,7 +300,9 @@ const filteredWordList = computed(() =>
 
         <a-col class="gutter-row" :span="12">
           <a-card title="ঠিকানা খুজে না পাওয়া গেলে ,এখানে তৈরী করুন...">
-            <a-form :model="addressCreateFrom" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" labelAlign="left">
+            <a-form :model="addressCreateFrom" name="createAddress" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" labelAlign="left"
+              @finish="onFinishAddressCreateForm"
+            >
               
               <a-form-item label="বিভাগ নির্বাচন করুন" name="division_id">
                 <a-select v-model:value="addressCreateFrom.division_id" showSearch :options="divisionList.map(division => ({
@@ -279,7 +339,7 @@ const filteredWordList = computed(() =>
                 <a-input  v-model:value="addressCreateFrom.line1" ></a-input>
               </a-form-item>
               <a-form-item>
-                <a-button type="primary" html-type="submit"> {{ isEditing ? 'Update' : 'Save' }}</a-button>
+                <a-button type="primary" html-type="submit"> Save</a-button>
               </a-form-item>
             </a-form>
           </a-card>

@@ -43,6 +43,7 @@ export interface upzillahListInterface {
 }
 
 export interface addressInterface {
+  id?: number,
   line1: string,
   division_id: number,
   district_id: number,
