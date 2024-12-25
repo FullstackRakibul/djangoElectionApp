@@ -6,6 +6,7 @@ export interface electionCenterInterface {
 }
 
 export interface electionInfoInterface {
+  id?: number
   election_info_name: string;
   election_info_name_ban?: string;
   total_voter?: number;

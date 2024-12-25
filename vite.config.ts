@@ -11,7 +11,7 @@ export default defineConfig({
   plugins: [
     vue(),
     vuetify({ autoImport: true }),
-    VueDevTools(),
+    //VueDevTools(),
     Components({
       resolvers: [
         AntDesignVueResolver({

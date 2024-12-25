@@ -1,6 +1,6 @@
 import { electionHttpJson } from "@/utils/axios/base.Http";
 import { httpServiceCountryList } from "./country.services";
-import type { Country } from "@/interface/common.interface";
+import type { addressInterface, Country } from "@/interface/common.interface";
 import type { electionPartyInterfcae } from "@/interface/election.interface";
 
 export const getUserInfo = () => { };
@@ -87,6 +87,35 @@ export const getUpzillahListService = async () => {
   const response = apiInstance.get("/common/upazila");
   return response;
 };
+
+
+// address services 
+
+export const addressCreateService = async (values: addressInterface) => {
+  const apiInstance = electionHttpJson()
+  const payload = {
+    line1: values.line1,
+    division_id: values.division_id,
+    district_id: values.district_id,
+    upazila_id: values.union_id,
+    union_id: values.union_id,
+    ward_id: values.ward_id,
+    city_corporation_id: values.city_corporation_id,
+    municipality_id: values.municipality_id
+  }
+  const response = await apiInstance.post("/common/address/", payload)
+
+  return response
+}
+
+
+export const getAddressListService = async () => {
+  const apiInstance = electionHttpJson()
+  const response = apiInstance.get("/common/address")
+  return response
+}
+
+
 
 //party
 
