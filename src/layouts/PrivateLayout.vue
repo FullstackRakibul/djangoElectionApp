@@ -44,7 +44,9 @@ const handleLogout = () => {
               </a-menu-item>
             </a-menu>
           </template>
-          <a-avatar size="large" style="cursor: pointer;">U</a-avatar>
+          <a-avatar size="large" class="bg-black"style="cursor: pointer;">
+            Tamal
+          </a-avatar>
         </a-dropdown>
       </a-layout-header>
       <a-layout-content :style="{ margin: '8px 10px', padding: '5px', background: '#fff', overflow: 'auto' }">

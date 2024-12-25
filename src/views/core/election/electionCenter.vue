@@ -275,9 +275,6 @@ const addressOptions = computed(() => {
             <a-form @finish="onFinishCenterCreateForm" :model="electionCenterFrom" :label-col="{ span: 8 }"
               :wrapper-col="{ span: 16 }" labelAlign="left">
               <a-form-item label="Center Name" name="center_name">
-                <a-input v-mode:value="electionCenterFrom"></a-input>
-              </a-form-item>
-              <a-form-item label="Center Name" name="center_name">
                 <a-input v-mode:value="electionCenterFrom.center_name"></a-input>
               </a-form-item>
               <a-form-item label="কেন্দ্রের নাম" name="center_name_ban">

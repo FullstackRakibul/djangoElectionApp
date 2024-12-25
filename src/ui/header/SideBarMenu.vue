@@ -67,7 +67,7 @@ const handleClick: MenuProps['onClick'] = (menuInfo) => {
   <div class="logo">
     <a-image
       :width="45"
-      src="https://play-lh.googleusercontent.com/SOoMR6xk74RUyLIo8Ub-fmGgbfdzTQ04UkFeJFRTsjyxfIx0ZwkMrJLlZ6E2d5Fg2-8"
+      src="https://www.crlibrary.org/sites/default/files/2024-09/vote.png"
     />
   </div>
 

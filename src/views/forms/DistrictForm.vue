@@ -160,7 +160,7 @@ onMounted(() => {
         <a-input v-model:value="districtForm.district_name" />
       </a-form-item>
 
-      <a-form-item label="দেশের নাম" name="district_name_ban"
+      <a-form-item label="জেলার নাম" name="district_name_ban"
         :rules="[{ required: true, message: 'Please input your password!' }]">
         <a-input v-model:value="districtForm.district_name_ban" />
       </a-form-item>
