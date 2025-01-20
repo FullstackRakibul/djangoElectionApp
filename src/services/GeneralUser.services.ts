@@ -45,7 +45,8 @@ export const UserCreateService = async (values: GeneralUserInterface) => {
     username: values.username,
     password: values.password,
     email: values.email,
-    phone: values.phone
+    phone: values.phone,
+    user_type: values.user_type
 
 
   }

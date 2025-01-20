@@ -59,7 +59,7 @@ const onFinish = async () => {
 
     console.log(data);
     const response = await axiosInstance.post('/account/user_login/', data);
-    console.log("response data :",response.data);
+    console.log("auth response data :",response.data);
     if (response.data.access_token) {
       const token = response.data.access_token;
       localStorage.setItem('token', token);

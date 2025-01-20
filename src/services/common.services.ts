@@ -60,7 +60,7 @@ export const getDistrictDetailsService = async (pk: number) => {
 
 export const postDivisionService = async (values: any) => {
   const apiInstance = electionHttpJson();
-  const data = apiInstance.post("/common/division_list/", values);
+  const data = apiInstance.post("/common/division/", values);
   return data;
 };
 

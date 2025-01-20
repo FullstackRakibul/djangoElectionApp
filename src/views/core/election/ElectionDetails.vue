@@ -1,3 +1,3 @@
 <template>
-  this is election details table ...
+  <div> election Details ...</div>
 </template>

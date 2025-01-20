@@ -86,7 +86,7 @@ const routes = [
       {
         path: "election-center",
         name: "electionCenter",
-        component: () => import("@/views/core/election/ElectionCenter.vue"),
+        component: () => import("@/views/core/election/electionCenter.vue"),
       },
       {
         path: "election-data",
