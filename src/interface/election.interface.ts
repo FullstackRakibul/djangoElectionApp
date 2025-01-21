@@ -41,7 +41,7 @@ export interface electionDetailsInterface {
   workers: [];
 }
 
-export interface electionSeat {
+export interface electionSeatInterface {
   election_seat_name: string;
   election_seat_name_ban?: string;
   address?: number;
