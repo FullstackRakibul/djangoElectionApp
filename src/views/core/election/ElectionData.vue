@@ -38,12 +38,16 @@ const electionListColumns = [
     dataIndex: "vote_count"
   },
   {
-    title: "Last Added By",
-    dataIndex: "updated_by"
+    title: "election",
+    dataIndex: "election"
   },
   {
-    title: "Actions",
-    dataIndex: "actions"
+    title: "worker",
+    dataIndex: "worker"
+  },
+  {
+    title: "election_center",
+    dataIndex: "election_center"
   },
 ]
 

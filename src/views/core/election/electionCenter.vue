@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import type { addressInterface, districtListInterface, divisionListInterface, unionListInterface, upzillahListInterface, wordListInterface } from '@/interface/common.interface';
 import type { electionCenterInterface } from '@/interface/election.interface';
-import { addressCreateService, getAddressListService, getDistrictDetailsService, getDistrictListService, getDivisionListService, getUnionListService, getUpzillahListService, getWordListService } from '@/services/common.services';
+import { addressCreateService, getAddressListService, getDistrictDetailsService, getDistrictListService, getDivisionDetailsService, getDivisionListService, getUnionListService, getUpzillahListService, getWordListService } from '@/services/common.services';
 import { electionCenterCreateService, electionCenterListDataService } from '@/services/election/election-center.services';
 import { message } from 'ant-design-vue';
 import { options } from 'node_modules/axios/index.cjs';
-import { computed, onMounted, reactive, ref } from 'vue'
+import { computed, onMounted, reactive, ref, render } from 'vue'
 
 
 const isEditing = ref(false);
@@ -35,7 +35,7 @@ const electionCenterListfetch = async () => {
     const response = await electionCenterListDataService();
     console.log("Election Center List Data", response)
     if (response.status === 200) {
-      getElectionCenterData.value = response.data.data
+      getElectionCenterData.value = response.data.data|| []
     }
   } catch (error) {
     console.log("election center data fetch error !", error)
@@ -50,6 +50,7 @@ onMounted(() => {
   getUnionList()
   getWordList()
   getAddressList()
+
 })
 
 const electionCenterDataColumns = [
@@ -60,6 +61,43 @@ const electionCenterDataColumns = [
   {
     title: "Center Name",
     dataIndex: "center_name"
+  },
+  {
+    title: "Address Details",
+    dataIndex: "address_details", // Maps to the "address_details" field
+    key: "address_details",
+    customRender:  ({ text }:any) => {
+      if (!text) return "N/A";
+      
+      return `
+        Line1: ${text.line1 || "N/A"}, 
+        Division: ${text.division || "N/A"}, 
+        District: ${text.district || "N/A"}, 
+        Upazila: ${text.upazila || "N/A"}, 
+        Union: ${text.union || "N/A"}, 
+        Ward: ${text.ward || "N/A"}
+      `;
+    },
+  },
+  {
+    title: "Address Details 2",
+    dataIndex: "address_details", // Maps to the "address_details" field
+    key: "address_details",
+    customRender: async ({ text }:any) => {
+      if (!text) return "N/A";
+      const response = await getDivisionDetailsService(text.division)
+      console.log("response data from table render : ", response.data)
+      const divisionName = response.data.division_name
+      console.log("response selected value : ",divisionName)
+      return `
+        Line1: ${text.line1 || "N/A"}, 
+         
+        District: ${text.district || "N/A"}, 
+        Upazila: ${text.upazila || "N/A"}, 
+        Union: ${text.union || "N/A"}, 
+        Ward: ${text.ward || "N/A"}
+      `;
+    },
   },
   {
     title: 'Action',
@@ -235,7 +273,7 @@ const getAddressList = async () => {
     console.log(response)
     if (response.status === 200) {
       addresList.value = response.data.data
-     
+      
     } else {
       message.error("Address response error !!!")
     }
@@ -246,8 +284,8 @@ const getAddressList = async () => {
 }
 
 
-const addressOptions = computed(() => {
-  return addresList.value.map((address) => {
+const addressOptions =  computed(() => {
+  return  addresList.value.map((address) => {
     const division = divisionList.value.find((d) => d.id === address.division_id);
     const district = districtList.value.find((d) => d.id === address.district_id);
     const upzillah = upazilaList.value.find((d) => d.id === address.upazila_id);
@@ -265,6 +303,8 @@ const addressOptions = computed(() => {
 
 
 </script>
+
+
 
 <template>
   <a-row class="flec flex-row justify-center items-center">
@@ -351,7 +391,7 @@ const addressOptions = computed(() => {
     <!-- Election Center List -->
     <div class="bg-white p-6 rounded-lg shadow-md">
       <h2 class="text-lg font-semibold mb-4">Election Center List</h2>
-      <a-table :dataSource="getElectionCenterData" :columns="electionCenterDataColumns" class="w-full" :pagination=false
+      <a-table :dataSource="getElectionCenterData" :columns="electionCenterDataColumns" class="w-full" :pagination=false rowKey="id" 
 size="size" />
 
     </div>

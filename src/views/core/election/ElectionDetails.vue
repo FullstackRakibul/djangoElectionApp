@@ -26,7 +26,35 @@ const electionDetailsColumn = [
   {
     title:"Election Name",
     dataIndex:"election_info_name"
-  }
+  },
+  {
+    title:"Election Name",
+    dataIndex:"election_info_name_ban"
+  },
+  {
+    title:"Election Name",
+    dataIndex:"total_voter"
+  },
+  {
+    title:"Election Name",
+    dataIndex:"total_votes"
+  },
+  {
+    title:"Election Type",
+    dataIndex:"election_type"
+  },
+  {
+    title:"Election Name",
+    dataIndex:"candidates"
+  },
+  {
+    title:"Election Name",
+    dataIndex:"parties"
+  },
+  {
+    title:"Election Name",
+    dataIndex:"workers"
+  },
 ]
 
 </script>
