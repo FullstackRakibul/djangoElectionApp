@@ -12,7 +12,7 @@ import {
 interface division {
   division_name: string;
   division_name_ban: string;
-  country_id: number;
+  country: number;
 }
 
 
@@ -25,10 +25,10 @@ interface Country {
 const divisionForm = reactive<division>({
   division_name: "",
   division_name_ban: "",
-  country_id: 0,
+  country: 0,
 });
 
-const countryList = ref(<Country[]>[]);
+const countryList = ref<Country[]>([]);
 const divisionList = ref<division[]>([]);
 
 
@@ -77,7 +77,6 @@ const onSubmit = async (values: any) => {
   console.log("Submitted Data to create division :", values);
   try {
     const res = await postDivisionService(values);
-
     console.log("response from request : ", res);
     if (res.status === 200) {
       message.success("Successfully created division !");
@@ -92,7 +91,7 @@ const onSubmit = async (values: any) => {
 const resetForm = () => {
   divisionForm.division_name = "";
   divisionForm.division_name_ban = "";
-  divisionForm.country_id = 0;
+  divisionForm.country = 0;
 };
 
 
@@ -163,9 +162,9 @@ const divisionListColumns = [
       <!-- Country Select Dropdown -->
       <a-row :gutter="24">
         <a-col :xs="24" :md="12">
-          <a-form-item label="Select Country" name="country_id">
+          <a-form-item label="Select Country" name="country">
             <a-select
-              v-model:value="divisionForm.country_id"
+              v-model:value="divisionForm.country"
               show-search
               placeholder="Select a country"
               :options="countryList.map(country => ({ label: country.country_name, value: country.id }))"

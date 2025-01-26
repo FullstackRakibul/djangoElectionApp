@@ -15,13 +15,13 @@ export const countryAddService = async (data: Country) => {
     country_name_ban: data.country_name_ban,
   };
   const apiInstance = electionHttpJson();
-  const response = apiInstance.post("/common/country/", payload);
+  const response = await apiInstance.post("/common/country/", payload);
   return response;
 };
 
 export const getCountryListService = async () => {
   const apiInstance = electionHttpJson();
-  const data = apiInstance.get("/common/country");
+  const data = await apiInstance.get("/common/country");
   console.log("service Check Response :-", data);
   return data;
 };
@@ -44,6 +44,13 @@ export const getDivisionListService = async () => {
   const data = await apiInstance.get("/common/division");
   return data;
 };
+
+export const getDivisionDetailsService = async (pk: number) => {
+  const apiInstance = electionHttpJson();
+  const data = await apiInstance.get("/common/division/?pk=" + pk);
+  return data;
+};
+
 // district services ...
 
 export const getDistrictListService = async () => {
@@ -60,7 +67,7 @@ export const getDistrictDetailsService = async (pk: number) => {
 
 export const postDivisionService = async (values: any) => {
   const apiInstance = electionHttpJson();
-  const data = apiInstance.post("/common/division_list/", values);
+  const data = await apiInstance.post("/common/division/", values);
   return data;
 };
 
@@ -68,7 +75,7 @@ export const postDivisionService = async (values: any) => {
 
 export const getWordListService = async () => {
   const apiInstance = electionHttpJson();
-  const response = apiInstance.get("/common/ward");
+  const response = await apiInstance.get("/common/ward");
   return response;
 };
 
@@ -76,7 +83,7 @@ export const getWordListService = async () => {
 
 export const getUnionListService = async () => {
   const apiInstance = electionHttpJson();
-  const response = apiInstance.get("/common/union");
+  const response = await apiInstance.get("/common/union");
   return response;
 };
 
@@ -84,7 +91,7 @@ export const getUnionListService = async () => {
 
 export const getUpzillahListService = async () => {
   const apiInstance = electionHttpJson();
-  const response = apiInstance.get("/common/upazila");
+  const response = await apiInstance.get("/common/upazila");
   return response;
 };
 
@@ -111,7 +118,7 @@ export const addressCreateService = async (values: addressInterface) => {
 
 export const getAddressListService = async () => {
   const apiInstance = electionHttpJson()
-  const response = apiInstance.get("/common/address")
+  const response = await apiInstance.get("/common/address")
   return response
 }
 

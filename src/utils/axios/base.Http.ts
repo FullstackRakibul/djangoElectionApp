@@ -42,9 +42,10 @@ export const electionHttpJson = (): AxiosInstance => {
   // Retrieve tokens from localStorage
   const accessToken = localStorage.getItem("access_token");
   const refreshToken = localStorage.getItem("refresh_token");
-
   const headers: Record<string, string> = {
-    ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+    ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {
+
+    }),
     //...(refreshToken ? { "x-refresh-token": refreshToken } : {}), // Add refresh token if available
   };
 

@@ -26,7 +26,7 @@ export interface electionDataInterface {
   updated_by?: number;
 }
 
-export interface electionDetails {
+export interface electionDetailsInterface {
   election_info_name: string;
   election_info_name_ban?: string;
   total_voter: number;
@@ -41,7 +41,7 @@ export interface electionDetails {
   workers: [];
 }
 
-export interface electionSeat {
+export interface electionSeatInterface {
   election_seat_name: string;
   election_seat_name_ban?: string;
   address?: number;

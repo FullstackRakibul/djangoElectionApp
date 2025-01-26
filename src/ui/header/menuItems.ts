@@ -41,7 +41,7 @@ const items = ref([
           },
           {
             key: "2-1-2",
-            label: "User List",
+            label: "Users",
             keyPath: "/user_list",
           },
         ]
