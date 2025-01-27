@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-center items-center bg-gray-100 p-6">
+  <div class="flex justify-center items-center bg-gray-100 p-6 h-screen-[20px] ">
     <a-card title="ব্যবহারকারীর ধরণ" class="w-full max-w-4xl text-2xl">
       <a-table :columns="columns" :dataSource="userTypeData" rowKey="id" bordered :pagination='false' />
     </a-card>
@@ -12,13 +12,7 @@ import { ref, onMounted } from 'vue';
 
 
 const columns = [
-  {
-    title: 'S/L',
-    dataIndex: 'id',
-    key: 'id',
-    width: '10%',
-    align: 'center'
-  },
+  
   {
     title: 'User Type (English)',
     dataIndex: 'user_type_name',
@@ -38,7 +32,7 @@ const userTypeData = ref([]);
 const fetchUserTypes = async () => {
   try {
     const response = await UserTypeListService()
-    userTypeData.value = response.data.data;
+    userTypeData.value = response.data.data.filter((data:any)=>![1,2].includes(data.id));
   } catch (error) {
     console.error('Error fetching user types:', error);
   }

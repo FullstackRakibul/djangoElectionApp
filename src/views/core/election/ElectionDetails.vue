@@ -32,11 +32,11 @@ const electionDetailsColumn = [
     dataIndex:"election_info_name_ban"
   },
   {
-    title:"Election Name",
+    title:"Total Voter",
     dataIndex:"total_voter"
   },
   {
-    title:"Election Name",
+    title:"Total Votes",
     dataIndex:"total_votes"
   },
   {
@@ -44,15 +44,15 @@ const electionDetailsColumn = [
     dataIndex:"election_type"
   },
   {
-    title:"Election Name",
+    title:"Candidates",
     dataIndex:"candidates"
   },
   {
-    title:"Election Name",
+    title:"Parties",
     dataIndex:"parties"
   },
   {
-    title:"Election Name",
+    title:"Workers",
     dataIndex:"workers"
   },
 ]
