@@ -1,101 +1,125 @@
 <template>
-  <v-container>
-    <v-row class="p">
-      <!-- Form Section -->
-      <v-col cols="12" md="4">
-        <v-card elevation="3" class="pa-4">
-          <v-card-title class="text-h6">Enter Election Data</v-card-title>
-          <v-divider class="mb-4"></v-divider>
-          <v-form ref="formRef" v-model="valid">
-            <!-- Vote Count Input -->
-            <v-text-field
-              v-model="electionData.vote_count"
-              label="Vote Count"
-              type="number"
-              :rules="[rules.required, rules.number]"
-              outlined
-            ></v-text-field>
-
-            <!-- Is Deleted Switch -->
-            <v-switch
-              v-model="electionData.is_deleted"
-              label="Is Deleted?"
-              inset
-            ></v-switch>
-
-            <!-- Election ID -->
-            <v-text-field
-              v-model="electionData.election"
-              label="Election ID"
-              type="number"
-              :rules="[rules.required, rules.number]"
-              outlined
-            ></v-text-field>
-
-            <!-- Worker ID -->
-            <v-text-field
-              v-model="electionData.worker"
-              label="Worker ID"
-              type="number"
-              :rules="[rules.required, rules.number]"
-              outlined
-            ></v-text-field>
-
-            <!-- Election Center -->
-            <v-text-field
-              v-model="electionData.election_center"
-              label="Election Center ID"
-              type="number"
-              :rules="[rules.required, rules.number]"
-              outlined
-            ></v-text-field>
-
-            <!-- Submit Button -->
-            <v-btn
-              class="mt-4"
-              :disabled="!valid"
-              block
-              color="primary"
-              @click="submitData"
-            >
-              Submit
-            </v-btn>
-          </v-form>
-        </v-card>
-      </v-col>
-
-      <!-- Table Section -->
-      <v-col cols="12" md="8">
-        <v-card elevation="3">
-          <v-card-title class="text-h6">Election Data List</v-card-title>
-          <v-divider></v-divider>
-          <v-data-table
-            :items="electionDataList"
-            :headers="tableHeaders"
-            class="elevation-1"
+  <a-row :gutter="[24, 24]" class="p-4 bg-gray-50 min-h-screen">
+    <!-- Form Section -->
+    <a-col :xs="24" :md="10" :lg="8">
+      <a-card
+        title="Enter Election Data"
+        class="shadow-sm rounded-lg"
+        :headStyle="{ borderBottom: '2px solid #1890ff' }"
+      >
+        <a-form
+          layout="vertical"
+          :model="formState"
+          @finish="handleSubmit"
+          ref="formRef"
+        >
+          <a-form-item
+            label="Vote Count"
+            name="vote_count"
+            :rules="[{ required: true, message: 'Please input vote count!' }]"
           >
-            <template v-slot:body="{ items }">
-              <transition-group name="fade" tag="tbody">
-                <tr v-for="(item, index) in items" :key="index">
-                  <td>{{ item.vote_count }}</td>
-                  <td>{{ item.is_deleted ? "Yes" : "No" }}</td>
-                  <td>{{ item.election }}</td>
-                  <td>{{ item.worker }}</td>
-                  <td>{{ item.election_center }}</td>
-                </tr>
-              </transition-group>
+            <a-input-number
+              v-model:value="formState.vote_count"
+              class="w-full"
+              :min="0"
+              :step="100"
+            />
+          </a-form-item>
+
+          <a-form-item label="Election ID" name="election">
+            <a-input
+              v-model:value="formState.election"
+              type="number"
+              placeholder="Enter election ID"
+            />
+          </a-form-item>
+
+          <a-form-item label="Worker ID" name="worker">
+            <a-input
+              v-model:value="formState.worker"
+              type="number"
+              placeholder="Enter worker ID"
+            />
+          </a-form-item>
+
+          <a-form-item label="Election Center" name="election_center">
+            <a-input
+              v-model:value="formState.election_center"
+              type="number"
+              placeholder="Enter center ID"
+            />
+          </a-form-item>
+
+          <a-form-item name="is_deleted">
+            <a-checkbox v-model:checked="formState.is_deleted">
+              Mark as deleted
+            </a-checkbox>
+          </a-form-item>
+
+          <a-button
+            type="primary"
+            html-type="submit"
+            class="w-full"
+            size="large"
+          >
+            Submit Data
+          </a-button>
+        </a-form>
+      </a-card>
+    </a-col>
+
+    <!-- Table Section -->
+    <a-col :xs="24" :md="14" :lg="16">
+      <a-card
+        title="Election Records"
+        class="shadow-sm rounded-lg"
+        :headStyle="{ borderBottom: '2px solid #1890ff' }"
+      >
+        <div class="mb-4 flex gap-2">
+          <a-input
+            v-model:value="searchText"
+            placeholder="Search records..."
+            allow-clear
+            class="max-w-xs"
+          >
+            <template #prefix>
+              <SearchOutlined />
             </template>
-          </v-data-table>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+          </a-input>
+        </div>
+
+        <a-table
+          :dataSource="filteredData"
+          :columns="columns"
+          :pagination="{ pageSize: 8 }"
+          bordered
+          size="middle"
+        >
+          <template #bodyCell="{ column, text }">
+            <template v-if="column.dataIndex === 'is_deleted'">
+              <a-tag :color="text ? 'red' : 'green'">
+                {{ text ? 'Deleted' : 'Active' }}
+              </a-tag>
+            </template>
+            <template v-else-if="column.dataIndex === 'vote_count'">
+              <span class="font-medium text-blue-600">
+                {{ text.toLocaleString() }}
+              </span>
+            </template>
+          </template>
+        </a-table>
+      </a-card>
+    </a-col>
+  </a-row>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from "vue";
+import { reactive, ref, computed } from 'vue';
+import { SearchOutlined } from '@ant-design/icons-vue';
+import type { TableColumnType } from 'ant-design-vue';
 
 interface ElectionData {
+  key: number;
   vote_count: number;
   is_deleted: boolean;
   election: number;
@@ -103,8 +127,11 @@ interface ElectionData {
   election_center: number;
 }
 
-// Reactive form data for new election entry
-const electionData = reactive<ElectionData>({
+const formRef = ref();
+const searchText = ref('');
+let idCounter = 0;
+
+const formState = reactive({
   vote_count: 0,
   is_deleted: false,
   election: 0,
@@ -112,110 +139,64 @@ const electionData = reactive<ElectionData>({
   election_center: 0,
 });
 
-// Reactive list of election data
-const electionDataList = ref<ElectionData[]>([]);
+const dataSource = ref<ElectionData[]>([]);
 
-// Form validity state
-const valid = ref(false);
+const columns: TableColumnType[] = [
+  {
+    title: 'Vote Count',
+    dataIndex: 'vote_count',
+    sorter: (a, b) => a.vote_count - b.vote_count,
+  },
+  {
+    title: 'Status',
+    dataIndex: 'is_deleted',
+    filters: [
+      { text: 'Active', value: false },
+      { text: 'Deleted', value: true },
+    ],
+    onFilter: (value, record) => record.is_deleted === value,
+  },
+  { title: 'Election ID', dataIndex: 'election' },
+  { title: 'Worker ID', dataIndex: 'worker' },
+  { title: 'Center ID', dataIndex: 'election_center' },
+];
 
-// Validation rules
-const rules = {
-  required: (value: any) => !!value || "This field is required.",
-  number: (value: any) =>
-    !isNaN(value) && Number(value) >= 0 || "Must be a valid number.",
-};
+const filteredData = computed(() => {
+  return dataSource.value.filter(item =>
+    Object.values(item).some(value =>
+      String(value).toLowerCase().includes(searchText.value.toLowerCase())
+    )
+  );
+});
 
-// Form reference for validation
-const formRef = ref();
-
-// Function to submit data
-const submitData = () => {
-  if (formRef.value && formRef.value.validate()) {
-    // Add a deep copy of the election data to the list
-    electionDataList.value.push({ ...electionData });
-
-    // Reset the form
-    Object.assign(electionData, {
-      vote_count: 0,
-      is_deleted: false,
-      election: 0,
-      worker: 0,
-      election_center: 0,
-    });
-  }
+const handleSubmit = () => {
+  dataSource.value.push({
+    key: idCounter++,
+    ...formState,
+  });
+  
+  formRef.value.resetFields();
+  formState.is_deleted = false;
 };
 </script>
 
 <style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s;
+.ant-input-number {
+  width: 100%;
 }
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
+
+.ant-card {
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+:deep(.ant-table-thead > tr > th) {
+  background-color: #f8fafc !important;
+  font-weight: 600;
+}
+
+:deep(.ant-table) {
+  border-radius: 0.5rem;
+  overflow: hidden;
 }
 </style>
-
-
-<!-- <script lang="ts" setup>
-import type { electionDataInterface } from '@/interface/election.interface';
-import { getElectionDataListService } from '@/services/election/election.data.services';
-import { message } from 'ant-design-vue';
-import { onMounted, ref } from 'vue';
-
-
-const ElectionData = ref(<electionDataInterface[]>[]);
-const loading = ref(false);
-
-const fetchElectionData = async () => {
-  try {
-    loading.value = true;
-    const response = await getElectionDataListService();
-    if (response.status === 200) {
-      ElectionData.value = response.data.data
-      message.success("Election Data Success ...");
-      loading.value = false
-    }
-  } catch (error) {
-    loading.value = false
-    console.log("Election data fetch error ", error)
-  }
-}
-
-onMounted(() => {
-  fetchElectionData()
-})
-
-
-const electionListColumns = [
-  {
-    title: "Election",
-    dataIndex: "election"
-  },
-  {
-    title: "Vote Count",
-    dataIndex: "vote_count"
-  },
-  {
-    title: "election",
-    dataIndex: "election"
-  },
-  {
-    title: "worker",
-    dataIndex: "worker"
-  },
-  {
-    title: "election_center",
-    dataIndex: "election_center"
-  },
-]
-
-</script>
-
-<template>
-  <a-card title="Election Data">
-    <a-table :dataSource="ElectionData" :columns="electionListColumns" :loading="loading">
-    </a-table>
-  </a-card>
-</template> -->

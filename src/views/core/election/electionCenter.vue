@@ -311,7 +311,7 @@ const addressOptions =  computed(() => {
     <a-col :span="18">
       <a-row :gutter="16" class="flex flex-row justify-between p-3">
         <a-col class="gutter-row" :span="12">
-          <a-card>
+          <a-card :headStyle="{ borderBottom: '2px solid #1890ff' }">
             <a-form @finish="onFinishCenterCreateForm" :model="electionCenterFrom" :label-col="{ span: 8 }"
               :wrapper-col="{ span: 16 }" labelAlign="left">
               <a-form-item label="Center Name" name="center_name">
@@ -336,7 +336,7 @@ const addressOptions =  computed(() => {
 
 
         <a-col class="gutter-row" :span="12">
-          <a-card title="ঠিকানা খুজে না পাওয়া গেলে ,এখানে তৈরী করুন...">
+          <a-card title="ঠিকানা খুজে না পাওয়া গেলে ,এখানে তৈরী করুন..." :headStyle="{ borderBottom: '2px solid #1890ff' }">
             <a-form :model="addressCreateFrom" name="createAddress" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" labelAlign="left"
               @finish="onFinishAddressCreateForm"
             >
@@ -390,9 +390,14 @@ const addressOptions =  computed(() => {
 
     <!-- Election Center List -->
     <div class="bg-white p-6 rounded-lg shadow-md">
-      <h2 class="text-lg font-semibold mb-4">Election Center List</h2>
+      
+      <a-card
+      title="Election Center List"
+      :headStyle="{ borderBottom: '2px solid #1890ff' }"
+      >
       <a-table :dataSource="getElectionCenterData" :columns="electionCenterDataColumns" class="w-full" :pagination=false rowKey="id" 
 size="size" />
+      </a-card>
 
     </div>
   </div>

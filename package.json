@@ -14,11 +14,13 @@
     "@fontsource/hind-siliguri": "^5.1.0",
     "@mdi/font": "^7.4.47",
     "ant-design-vue": "^4.2.3",
+    "apexcharts": "^4.4.0",
     "axios": "^1.7.5",
     "cors": "^2.8.5",
     "pinia": "^2.2.6",
     "vue": "^3.4.21",
-    "vue-router": "^4.3.0"
+    "vue-router": "^4.3.0",
+    "vue3-apexcharts": "^1.8.0"
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.4",

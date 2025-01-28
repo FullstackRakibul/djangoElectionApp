@@ -1,6 +1,6 @@
 <template>
  <section >
-    <v-row  justify="center" dense>
+    <!-- <v-row  justify="center" dense>
       <v-col cols="22">
        <ElectionSummaryCard/>
       </v-col>
@@ -10,11 +10,11 @@
            <ActiveVotingCard/>
          </v-col>
          <v-col>
-           <!-- <UpcomingVotingCard/> -->
+           <UpcomingVotingCard/>
          </v-col>
         </v-row>
       </v-col>
-     </v-row>
+     </v-row> -->
 
   
 
@@ -23,11 +23,6 @@
       <!-- Election Centers Analytics Table -->
       <v-col cols="18">
         <CenterAnalyticsTable :data="analyticsData" />
-      </v-col>
-
-      <!-- Vote Trends Sparklines -->
-      <v-col cols="6">
-        <VoteTrendChart :voteCounts="voteCounts" />
       </v-col>
     </v-row>
 

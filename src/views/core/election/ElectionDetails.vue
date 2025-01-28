@@ -60,7 +60,7 @@ const electionDetailsColumn = [
 </script>
 
 <template>
-    <a-card title="Election Data">
+    <a-card title="Election Data" :headStyle="{ borderBottom: '2px solid #1890ff' }">
     <a-table :dataSource="electionDetails" :columns="electionDetailsColumn" :loading="loading">
     </a-table>
   </a-card>
