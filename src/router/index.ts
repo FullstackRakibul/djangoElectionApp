@@ -29,11 +29,6 @@ const routes = [
         component: () => import("@/views/users/UserList.vue"),
       },
       {
-        path: "add_designation",
-        name: "addDesignation",
-        component: () => import("@/views/forms/DesignationForm.vue"),
-      },
-      {
         path: "add_country",
         name: "addCountry",
         component: () => import("@/views/forms/CountryForm.vue"),

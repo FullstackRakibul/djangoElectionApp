@@ -19,9 +19,13 @@ watchEffect(() => {
 });
 
 const handleLogout = () => {
-  // Clear local storage
-  localStorage.clear();
-  // Redirect to the login page
+  
+  localStorage.clear()
+  sessionStorage.clear()
+  // localStorage.removeItem("refresh_token");
+  // localStorage.removeItem("access_token");
+  // localStorage.removeItem("token");
+  
   router.push({ name: 'login' });
 };
 </script>

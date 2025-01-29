@@ -74,7 +74,7 @@ const editingUserId = ref(0);
 const fetchUserList = async () => {
   try {
     const response = await UserListService()
-    userListData.value = response;
+    userListData.value = response.filter((data:any)=>![1,2,3,4].includes(data.id));
   } catch (error) {
     console.error('Error fetching user List:', error);
   }
@@ -84,7 +84,7 @@ const fetchUserTypeList = async  () => {
   try {
     const response = await UserTypeListService();
     console.log("User type list data :", response.data);
-    userTypeListData.value = response.data.data
+    userTypeListData.value = response.data.data.filter((data:any)=>![1,2].includes(data.id))
 
 
   } catch (error) {
@@ -104,7 +104,7 @@ const onFormSubmit = async (values: GeneralUserInterface) => {
       userListData.value = response.data.data
       fetchUserList()
       message.success(`${response.data.msg}`)
-      userCreateFrom
+
     } else {
       message.error(response.data.msg || "An error occurred");
     }
@@ -184,6 +184,7 @@ const updateUser = async (id: number, values: GeneralUserInterface) => {
         <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
           <a-button type="primary" html-type="submit" size="medium"> {{ isEditing ? 'Update' : 'Create User'
           }}</a-button>
+          
       </a-form-item>
     </a-space>
     </a-form>
@@ -191,7 +192,7 @@ const updateUser = async (id: number, values: GeneralUserInterface) => {
   <div class="flex flex-row justify-center items-top  bg-gray-100 pt-3">
     <a-card title="ব্যবহারকারী গণ" class="w-full text-2xl">
       <a-table :columns="columns" :dataSource="userListData" rowKey="key" bordered :pagination="false"
-        :scroll="{ y: 200 }" size="small">
+        :scroll="{ y: 400 }" size="small">
         <template #bodyCell="{ record, column }">
           <template v-if="column.key === 'actions'">
             <div class="flex gap-4">
@@ -200,6 +201,7 @@ const updateUser = async (id: number, values: GeneralUserInterface) => {
                 isDeleteModalOpen = true;
                 deletingUserId = record.id;
               }" danger type="primary" size="small">Delete</a-button>
+              
             </div>
           </template>
         </template>

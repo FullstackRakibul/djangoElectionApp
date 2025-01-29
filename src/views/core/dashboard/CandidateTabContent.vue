@@ -1,17 +1,17 @@
 <template>
-  <div>
-    <h3>This is Tab Content {{ tabNumber }}</h3>
-    <p>Custom content for Tab {{ tabNumber }} goes here.</p>
-  </div>
+ <!-- Winning Candidates -->
+     
+      <v-row justify="center" dense class="mt-8">
+      <!-- Election Centers Analytics Table -->
+      <v-col cols="18">
+        <WinningCandidateCard/>
+      </v-col>
+      <!-- <v-col cols="18">
+        <WinningCandidateCard/>
+      </v-col> -->
+    </v-row>
 </template>
 
-<script>
-export default {
-  props: {
-    tabNumber: {
-      type: Number,
-      default: 2,
-    },
-  },
-};
+<script lang="ts" setup >
+import WinningCandidateCard from '@/ui/dashboard/WinningCandidateCard.vue';
 </script>

@@ -47,11 +47,6 @@ const items = ref([
         ]
       },
       {
-        key: "2-2",
-        label: "Add Designation",
-        keyPath: "/add_designation", // Route for user type list
-      },
-      {
         key: "2-3",
         label: "User Address",
         keyPath: "/add_address", // Route for user type list

@@ -60,3 +60,11 @@ export interface electionPartyInterfcae {
   party_symbol: string;
   created_by?: string;
 }
+
+export interface DataTableHeaderForVoteCount {
+  title: string;    // Display text
+  key: string;      // Item property key
+  align?: 'start' | 'end' | 'center';
+  sortable?: boolean;
+  // ... other optional properties
+}

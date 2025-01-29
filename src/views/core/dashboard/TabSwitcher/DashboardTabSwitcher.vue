@@ -42,7 +42,7 @@ import LocalLogsContent from '../LocalLogsContent.vue';
 const activeTab = ref(0);
  const tabs =[
   'ড্যাশবোর্ড',
-  'ক্যান্ডিডেট দেখুন',
+  'ফলাফল দেখুন',
   'আসন সমূহ দেখুন',
   'দল সমূহ দেখুন',
   'জাতীয় সংসদ নির্বাচন আচরণ বিধিমালা',

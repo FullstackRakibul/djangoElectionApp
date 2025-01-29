@@ -21,6 +21,14 @@ const ElectionTypeColumn =[
   {
     title:"Type Name",
     dataIndex:"election_type_name"
+  },
+  {
+    title:"Type Name",
+    dataIndex:"election_type_name_ban"
+  },
+  {
+    title:"Type Name",
+    dataIndex:"updated_by"
   }
 ]
 

@@ -5,6 +5,8 @@ import { message } from 'ant-design-vue';
 import { computed, onMounted, reactive, ref } from 'vue';
 
 
+import AddressTable from '@/ui/common/AddressTable.vue';
+
 const addressCreateFrom = reactive<addressInterface>({
   line1: '',
   division_id: 2,
@@ -209,12 +211,16 @@ const onFinishAddressCreateForm = async (values:addressInterface)=>{
             </a-form>
           </a-card>
   
-  <a-card
+  <!-- <a-card
   title="Address List "
   >
     <a-table>
 
     </a-table>
+  </a-card> -->
+  <a-card>
+
+    <AddressTable/>
   </a-card>
     
 </template>
