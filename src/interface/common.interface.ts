@@ -45,11 +45,11 @@ export interface upzillahListInterface {
 export interface addressInterface {
   id?: number,
   line1: string,
-  division_id: number,
-  district_id: number,
-  upazila_id: number,
-  union_id: number,
-  ward_id: number,
-  city_corporation_id: number,
-  municipality_id: number
+  division: number,
+  district: number,
+  upazila: number,
+  union: number,
+  ward: number,
+  city_corporation?: number,
+  municipality?: number
 }

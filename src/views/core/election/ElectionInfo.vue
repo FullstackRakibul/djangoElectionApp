@@ -19,11 +19,11 @@ const fetchElectionInfo = async ()=> {
 
 const electionInfoDataColumn = [
   {
-    title:"Election Info Name",
+    title:"Election Information Name",
     dataIndex:"election_info_name"
   },
   {
-    title:"Election Info Name",
+    title:"নির্বাচনের নাম",
     dataIndex:"election_info_name_ban"
   },
   {
@@ -40,7 +40,7 @@ const electionInfoDataColumn = [
 
 <template>
   <a-card
-    title="Election Info Data : "
+    title="নির্বাচন সমূহ ... "
   >
   <a-table
     :dataSource="ElectionInfoData"

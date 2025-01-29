@@ -1,4 +1,421 @@
-<script lang="ts" setup>
+
+<template>
+  <div class="p-4 bg-gray-50 min-h-screen">
+    <!-- Main Form Section -->
+    <a-row :gutter="[24, 24]" class="mb-6">
+      <!-- Election Center Form -->
+      <a-col :xs="24" :md="12">
+        <a-card
+          title="Create Election Center"
+          class="shadow-lg rounded-xl"
+          :headStyle="{ borderBottom: '2px solid #1890ff' }"
+        >
+          <a-form
+            layout="vertical"
+            @finish="handleCreateElectionCenter"
+            :model="electionCenterForm"
+            ref="electionFormRef"
+          >
+            <a-form-item
+              label="Center Name (English)"
+              name="center_name"
+              :rules="[{ required: true, message: 'Please enter center name!' }]"
+            >
+              <a-input
+                v-model:value="electionCenterForm.center_name"
+                placeholder="Enter center name"
+              />
+            </a-form-item>
+
+            <a-form-item
+              label="কেন্দ্রের নাম (বাংলা)"
+              name="center_name_ban"
+            >
+              <a-input
+                v-model:value="electionCenterForm.center_name_ban"
+                placeholder="কেন্দ্রের নাম লিখুন"
+              />
+            </a-form-item>
+
+            <a-form-item
+              label="Select Address"
+              name="address"
+              :rules="[{ required: true, message: 'Please select an address!' }]"
+            >
+              <a-select
+                v-model:value="electionCenterForm.address"
+                show-search
+                placeholder="Select address"
+                :options="addressOptions"
+                :loading="loadingAddresses"
+              />
+            </a-form-item>
+
+            <a-button
+              type="primary"
+              html-type="submit"
+              block
+              :loading="creatingCenter"
+            >
+              Create Center
+            </a-button>
+          </a-form>
+        </a-card>
+      </a-col>
+
+      <!-- Address Creation Form -->
+      <a-col :xs="24" :md="12">
+        <a-card
+          title="Create New Address"
+          class="shadow-lg rounded-xl"
+          :headStyle="{ borderBottom: '2px solid #1890ff' }"
+        >
+          <a-form
+            layout="vertical"
+            @finish="handleCreateAddress"
+            :model="addressForm"
+            ref="addressFormRef"
+          >
+            <a-form-item
+              label="বিভাগ"
+              name="division"
+              :rules="[{ required: true, message: 'Please select division!' }]"
+            >
+              <a-select
+                v-model:value="addressForm.division"
+                show-search
+                :options="divisionOptions"
+                placeholder="বিভাগ নির্বাচন করুন"
+                @change="handleDivisionChange"
+              />
+            </a-form-item>
+
+            <a-form-item
+              label="জেলা"
+              name="district"
+              :rules="[{ required: true, message: 'Please select district!' }]"
+            >
+              <a-select
+                v-model:value="addressForm.district"
+                show-search
+                :options="districtOptions"
+                placeholder="জেলা নির্বাচন করুন"
+                :disabled="!addressForm.division"
+                @change="handleDistrictChange"
+              />
+            </a-form-item>
+
+            <a-form-item
+              label="উপজেলা"
+              name="upazila"
+              :rules="[{ required: true, message: 'Please select upazila!' }]"
+            >
+              <a-select
+                v-model:value="addressForm.upazila"
+                show-search
+                :options="upazilaOptions"
+                placeholder="উপজেলা নির্বাচন করুন"
+                :disabled="!addressForm.district"
+                @change="handleUpazilaChange"
+              />
+            </a-form-item>
+
+            <a-form-item
+              label="ইউনিয়ন"
+              name="union"
+              :rules="[{ required: true, message: 'Please select union!' }]"
+            >
+              <a-select
+                v-model:value="addressForm.union"
+                show-search
+                :options="unionOptions"
+                placeholder="ইউনিয়ন নির্বাচন করুন"
+                :disabled="!addressForm.upazila"
+              />
+            </a-form-item>
+
+            <a-form-item
+              label="বিস্তারিত ঠিকানা"
+              name="line1"
+              :rules="[{ required: true, message: 'Please enter address details!' }]"
+            >
+              <a-input
+                v-model:value="addressForm.line1"
+                placeholder="রোড/বাড়ি নং/গ্রামের নাম"
+              />
+            </a-form-item>
+
+            <a-button
+              type="primary"
+              html-type="submit"
+              block
+              :loading="creatingAddress"
+            >
+              Create Address
+            </a-button>
+          </a-form>
+        </a-card>
+      </a-col>
+    </a-row>
+
+    <!-- Election Center List -->
+    <a-card
+      title="Election Centers"
+      class="shadow-lg rounded-xl"
+      :headStyle="{ borderBottom: '2px solid #1890ff' }"
+    >
+      <a-table
+        :dataSource="electionCenters"
+        :columns="centerColumns"
+        :loading="loadingCenters"
+        :pagination="{ pageSize: 8 }"
+        bordered
+      >
+        <template #bodyCell="{ column, record }">
+          <template v-if="column.key === 'address_details'">
+            <div class="space-y-1">
+              <div class="font-medium">{{ record.address_details?.line1 }}</div>
+              <div class="text-gray-600 text-sm">
+                {{ formatAddress(record.address_details) }}
+              </div>
+            </div>
+          </template>
+          <template v-else-if="column.key === 'actions'">
+            <a-space>
+              <a-button type="link" size="small">Edit</a-button>
+              <a-button type="link" danger size="small">Delete</a-button>
+            </a-space>
+          </template>
+        </template>
+      </a-table>
+    </a-card>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, reactive, computed, onMounted } from 'vue';
+import { message } from 'ant-design-vue';
+import type { FormInstance } from 'ant-design-vue';
+import type {
+  AddressInterface,
+  DivisionInterface,
+  DistrictInterface,
+  UpazilaInterface,
+  UnionInterface,
+  ElectionCenterInterface
+} from '@/interface/common.interface';
+import {
+  getDivisionList,
+  getDistrictList,
+  getUpazilaList,
+  getUnionList,
+  createAddress,
+  getAddressList,
+  createElectionCenter,
+  getElectionCenters
+} from '@/services/api';
+
+// Election Center Form
+const electionFormRef = ref<FormInstance>();
+const electionCenterForm = reactive({
+  center_name: '',
+  center_name_ban: '',
+  address: undefined as number | undefined
+});
+const creatingCenter = ref(false);
+
+// Address Form
+const addressFormRef = ref<FormInstance>();
+const addressForm = reactive({
+  line1: '',
+  division: undefined as number | undefined,
+  district: undefined as number | undefined,
+  upazila: undefined as number | undefined,
+  union: undefined as number | undefined
+});
+const creatingAddress = ref(false);
+
+// Data Lists
+const divisions = ref<DivisionInterface[]>([]);
+const districts = ref<DistrictInterface[]>([]);
+const upazilas = ref<UpazilaInterface[]>([]);
+const unions = ref<UnionInterface[]>([]);
+const addresses = ref<AddressInterface[]>([]);
+const electionCenters = ref<ElectionCenterInterface[]>([]);
+
+// Loading States
+const loadingDivisions = ref(false);
+const loadingDistricts = ref(false);
+const loadingUpazilas = ref(false);
+const loadingUnions = ref(false);
+const loadingAddresses = ref(false);
+const loadingCenters = ref(false);
+
+// Options for Selects
+const divisionOptions = computed(() => 
+  divisions.value.map(d => ({
+    value: d.id,
+    label: d.division_name_ban
+  }))
+);
+
+const districtOptions = computed(() =>
+  districts.value
+    .filter(d => d.division_id === addressForm.division)
+    .map(d => ({
+      value: d.id,
+      label: d.district_name_ban
+    }))
+);
+
+const upazilaOptions = computed(() =>
+  upazilas.value
+    .filter(u => u.district_id === addressForm.district)
+    .map(u => ({
+      value: u.id,
+      label: u.upazila_name_ban
+    }))
+);
+
+const unionOptions = computed(() =>
+  unions.value
+    .filter(u => u.upazila_id === addressForm.upazila)
+    .map(u => ({
+      value: u.id,
+      label: u.union_name_ban
+    }))
+);
+
+const addressOptions = computed(() =>
+  addresses.value.map(a => ({
+    value: a.id,
+    label: `${a.line1}, ${getDistrictName(a.district_id)}, ${getDivisionName(a.division_id)}`
+  }))
+);
+
+// Table Columns
+const centerColumns = [
+  {
+    title: 'S/L',
+    dataIndex: 'id',
+    sorter: (a: ElectionCenterInterface, b: ElectionCenterInterface) => a.id - b.id
+  },
+  {
+    title: 'Center Name',
+    dataIndex: 'center_name',
+    sorter: (a: ElectionCenterInterface, b: ElectionCenterInterface) => 
+      a.center_name.localeCompare(b.center_name)
+  },
+  {
+    title: 'Address Details',
+    key: 'address_details'
+  },
+  {
+    title: 'Actions',
+    key: 'actions'
+  }
+];
+
+// Helper Functions
+const getDivisionName = (id: number) => 
+  divisions.value.find(d => d.id === id)?.division_name_ban || 'N/A';
+
+const getDistrictName = (id: number) =>
+  districts.value.find(d => d.id === id)?.district_name_ban || 'N/A';
+
+const formatAddress = (address: AddressInterface) => {
+  const parts = [
+    address.ward_id ? `ওয়ার্ড: ${address.ward_id}` : '',
+    address.union_id ? `ইউনিয়ন: ${address.union_id}` : '',
+    address.upazila_id ? `উপজেলা: ${getDistrictName(address.upazila_id)}` : '',
+    address.district_id ? `জেলা: ${getDistrictName(address.district_id)}` : '',
+    address.division_id ? `বিভাগ: ${getDivisionName(address.division_id)}` : ''
+  ].filter(Boolean);
+
+  return parts.join(' • ');
+};
+
+// Form Handlers
+const handleCreateElectionCenter = async () => {
+  try {
+    creatingCenter.value = true;
+    const response = await createElectionCenter(electionCenterForm);
+    electionCenters.value = [response.data, ...electionCenters.value];
+    message.success('Election center created successfully!');
+    electionFormRef.value?.resetFields();
+  } catch (error) {
+    message.error('Error creating election center!');
+    console.error(error);
+  } finally {
+    creatingCenter.value = false;
+  }
+};
+
+const handleCreateAddress = async () => {
+  try {
+    creatingAddress.value = true;
+    const response = await createAddress(addressForm);
+    addresses.value = [response.data, ...addresses.value];
+    message.success('Address created successfully!');
+    addressFormRef.value?.resetFields();
+  } catch (error) {
+    message.error('Error creating address!');
+    console.error(error);
+  } finally {
+    creatingAddress.value = false;
+  }
+};
+
+// Data Fetching
+const loadInitialData = async () => {
+  try {
+    loadingAddresses.value = true;
+    loadingCenters.value = true;
+
+    const [divisionsRes, addressesRes, centersRes] = await Promise.all([
+      getDivisionList(),
+      getAddressList(),
+      getElectionCenters()
+    ]);
+
+    divisions.value = divisionsRes.data;
+    addresses.value = addressesRes.data;
+    electionCenters.value = centersRes.data;
+  } catch (error) {
+    message.error('Error loading initial data!');
+    console.error(error);
+  } finally {
+    loadingAddresses.value = false;
+    loadingCenters.value = false;
+  }
+};
+
+// Lifecycle Hooks
+onMounted(() => {
+  loadInitialData();
+});
+</script>
+
+<style scoped>
+.ant-card {
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+:deep(.ant-table-thead > tr > th) {
+  background-color: #f8fafc !important;
+  font-weight: 600;
+}
+
+:deep(.ant-select-selector) {
+  border-radius: 0.5rem !important;
+}
+
+:deep(.ant-input) {
+  border-radius: 0.5rem;
+}
+</style>
+<!-- <script lang="ts" setup>
 import type { addressInterface, districtListInterface, divisionListInterface, unionListInterface, upzillahListInterface, wordListInterface } from '@/interface/common.interface';
 import type { electionCenterInterface } from '@/interface/election.interface';
 import { addressCreateService, getAddressListService, getDistrictDetailsService, getDistrictListService, getDivisionDetailsService, getDivisionListService, getUnionListService, getUpzillahListService, getWordListService } from '@/services/common.services';
@@ -20,13 +437,13 @@ const electionCenterFrom = reactive<electionCenterInterface>({
 
 const addressCreateFrom = reactive<addressInterface>({
   line1: '',
-  division_id: 2,
-  district_id: 0,
-  upazila_id: 0,
-  union_id: 0,
-  ward_id: 0,
-  city_corporation_id: 0,
-  municipality_id: 0
+  division: 2,
+  district: 0,
+  upazila: 0,
+  union: 0,
+  ward: 0,
+  city_corporation: 0,
+  municipality: 0
 })
 
 
@@ -251,10 +668,16 @@ const filteredWordList = computed(() =>
 
 
 // create full address
+<<<<<<< HEAD
 
 const onFinishAddressCreateForm = async (values: addressInterface) => {
   try {
     console.log("submitted value :", values)
+=======
+const onFinishAddressCreateForm = async (values:addressInterface)=>{
+  try{
+    console.log("submitted value :",values)
+>>>>>>> 5902143 (type page update)
     const response = await addressCreateService(values)
     console.log("Address create response :", response?.data)
   } catch (error) {
@@ -284,11 +707,19 @@ const getAddressList = async () => {
 }
 
 
+<<<<<<< HEAD
 const addressOptions = computed(() => {
   return addresList.value.map((address) => {
     const division = divisionList.value.find((d) => d.id === address.division_id);
     const district = districtList.value.find((d) => d.id === address.district_id);
     const upzillah = upazilaList.value.find((d) => d.id === address.upazila_id);
+=======
+const addressOptions =  computed(() => {
+  return  addresList.value.map((address) => {
+    const division = divisionList.value.find((d) => d.id === address.division);
+    const district = districtList.value.find((d) => d.id === address.district);
+    const upzillah = upazilaList.value.find((d) => d.id === address.upazila);
+>>>>>>> 5902143 (type page update)
 
     console.log("Address : ", division)
     console.log("Address : ", district)
@@ -337,6 +768,7 @@ const addressOptions = computed(() => {
 
 
         <a-col class="gutter-row" :span="12">
+<<<<<<< HEAD
           <a-card title="ঠিকানা খুজে না পাওয়া গেলে ,এখানে তৈরী করুন..."
             :headStyle="{ borderBottom: '2px solid #1890ff' }">
             <a-form :model="addressCreateFrom" name="createAddress" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }"
@@ -344,31 +776,40 @@ const addressOptions = computed(() => {
 
               <a-form-item label="বিভাগ নির্বাচন করুন" name="division_id">
                 <a-select v-model:value="addressCreateFrom.division_id" showSearch :options="divisionList.map(division => ({
+=======
+          <a-card title="ঠিকানা খুজে না পাওয়া গেলে ,এখানে তৈরী করুন..." :headStyle="{ borderBottom: '2px solid #1890ff' }">
+            <a-form :model="addressCreateFrom" name="createAddress" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" labelAlign="left"
+              @finish="onFinishAddressCreateForm"
+            >
+              
+              <a-form-item label="বিভাগ নির্বাচন করুন" name="division">
+                <a-select v-model:value="addressCreateFrom.division" showSearch :options="divisionList.map(division => ({
+>>>>>>> 5902143 (type page update)
                   label: division.division_name_ban, value: division.id
                 }))">
 
                 </a-select>
               </a-form-item>
-              <a-form-item label="জেলা নির্বাচন করুন" name="district_id">
-                <a-select v-model:value="addressCreateFrom.district_id" showSearch :options="filteredDistrictList.map(district => ({
+              <a-form-item label="জেলা নির্বাচন করুন" name="district">
+                <a-select v-model:value="addressCreateFrom.district" showSearch :options="filteredDistrictList.map(district => ({
                   label: district.district_name_ban, value: district.id
                 }))">
                 </a-select>
               </a-form-item>
-              <a-form-item label="উপজেলা নির্বাচন করুন" name="upazila_id">
-                <a-select v-model:value="addressCreateFrom.upazila_id" showSearch :options="filteredUpzillatList.map(upz => ({
+              <a-form-item label="উপজেলা নির্বাচন করুন" name="upazila">
+                <a-select v-model:value="addressCreateFrom.upazila" showSearch :options="filteredUpzillatList.map(upz => ({
                   label: upz.upazila_name_ban, value: upz.id
                 }))">
                 </a-select>
               </a-form-item>
-              <a-form-item label="ইউনিয়ন নির্বাচন করুন" name="upazila_id">
-                <a-select v-model:value="addressCreateFrom.union_id" showSearch :options="filteredUniontList.map(union => ({
+              <a-form-item label="ইউনিয়ন নির্বাচন করুন" name="union">
+                <a-select v-model:value="addressCreateFrom.union" showSearch :options="filteredUniontList.map(union => ({
                   label: union.union_name_ban, value: union.id
                 }))">
                 </a-select>
               </a-form-item>
-              <a-form-item label="ওয়ার্ড নির্বাচন করুন" name="ward_id">
-                <a-select v-model:value="addressCreateFrom.ward_id" showSearch :options="filteredWordList.map(ward => ({
+              <a-form-item label="ওয়ার্ড নির্বাচন করুন" name="ward">
+                <a-select v-model:value="addressCreateFrom.ward" showSearch :options="filteredWordList.map(ward => ({
                   label: ward.ward_name_ban, value: ward.id
                 }))">
                 </a-select>
@@ -399,4 +840,4 @@ const addressOptions = computed(() => {
 
     </div>
   </div>
-</template>
+</template> -->

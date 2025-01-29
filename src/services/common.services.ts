@@ -102,13 +102,13 @@ export const addressCreateService = async (values: addressInterface) => {
   const apiInstance = electionHttpJson()
   const payload = {
     line1: values.line1,
-    division_id: values.division_id,
-    district_id: values.district_id,
-    upazila_id: values.union_id,
-    union_id: values.union_id,
-    ward_id: values.ward_id,
-    city_corporation_id: values.city_corporation_id,
-    municipality_id: values.municipality_id
+    division_id: values.division,
+    district_id: values.district,
+    upazila_id: values.union,
+    union_id: values.union,
+    ward_id: values.ward,
+    city_corporation_id: values.city_corporation,
+    municipality_id: values.municipality
   }
   const response = await apiInstance.post("/common/address/", payload)
 
