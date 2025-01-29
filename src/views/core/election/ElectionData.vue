@@ -2,66 +2,33 @@
   <a-row :gutter="[24, 24]" class="p-4 bg-gray-50 min-h-screen">
     <!-- Form Section -->
     <a-col :xs="24" :md="10" :lg="8">
-      <a-card
-        title="Enter Election Data"
-        class="shadow-sm rounded-lg"
-        :headStyle="{ borderBottom: '2px solid #1890ff' }"
-      >
-        <a-form
-          layout="vertical"
-          :model="formState"
-          @finish="handleSubmit"
-          ref="formRef"
-        >
-          <a-form-item
-            label="Vote Count"
-            name="vote_count"
-            :rules="[{ required: true, message: 'Please input vote count!' }]"
-          >
-            <a-input-number
-              v-model:value="formState.vote_count"
-              class="w-full"
-              :min="0"
-              :step="100"
-            />
+      <a-card title="Enter Election Data" class="shadow-sm rounded-lg"
+        :headStyle="{ borderBottom: '2px solid #1890ff' }">
+        <a-form layout="vertical" :model="formState" @finish="handleSubmit" ref="formRef">
+          <a-form-item label="Vote Count" name="vote_count"
+            :rules="[{ required: true, message: 'Please input vote count!' }]">
+            <a-input-number v-model:value="formState.vote_count" class="w-full" :min="0" :step="100" />
           </a-form-item>
 
           <a-form-item label="Election ID" name="election">
-            <a-input
-              v-model:value="formState.election"
-              type="number"
-              placeholder="Enter election ID"
-            />
+            <a-input v-model:value="formState.election" type="number" placeholder="Enter election ID" />
           </a-form-item>
 
           <a-form-item label="Worker ID" name="worker">
-            <a-input
-              v-model:value="formState.worker"
-              type="number"
-              placeholder="Enter worker ID"
-            />
+            <a-input v-model:value="formState.worker" type="number" placeholder="Enter worker ID" />
           </a-form-item>
 
           <a-form-item label="Election Center" name="election_center">
-            <a-input
-              v-model:value="formState.election_center"
-              type="number"
-              placeholder="Enter center ID"
-            />
+            <a-input v-model:value="formState.election_center" type="number" placeholder="Enter center ID" />
           </a-form-item>
 
           <a-form-item name="is_deleted">
             <a-checkbox v-model:checked="formState.is_deleted">
-              Mark as deleted
+              Sent to Audit
             </a-checkbox>
           </a-form-item>
 
-          <a-button
-            type="primary"
-            html-type="submit"
-            class="w-full"
-            size="large"
-          >
+          <a-button type="primary" html-type="submit" class="w-full" size="large">
             Submit Data
           </a-button>
         </a-form>
@@ -70,31 +37,16 @@
 
     <!-- Table Section -->
     <a-col :xs="24" :md="14" :lg="16">
-      <a-card
-        title="Election Records"
-        class="shadow-sm rounded-lg"
-        :headStyle="{ borderBottom: '2px solid #1890ff' }"
-      >
+      <a-card title="Election Records" class="shadow-sm rounded-lg" :headStyle="{ borderBottom: '2px solid #1890ff' }">
         <div class="mb-4 flex gap-2">
-          <a-input
-            v-model:value="searchText"
-            placeholder="Search records..."
-            allow-clear
-            class="max-w-xs"
-          >
+          <a-input v-model:value="searchText" placeholder="Search records..." allow-clear class="max-w-xs">
             <template #prefix>
               <SearchOutlined />
             </template>
           </a-input>
         </div>
 
-        <a-table
-          :dataSource="filteredData"
-          :columns="columns"
-          :pagination="{ pageSize: 8 }"
-          bordered
-          size="middle"
-        >
+        <a-table :dataSource="filteredData" :columns="columns" :pagination="{ pageSize: 8 }" bordered size="middle">
           <template #bodyCell="{ column, text }">
             <template v-if="column.dataIndex === 'is_deleted'">
               <a-tag :color="text ? 'red' : 'green'">
@@ -174,7 +126,7 @@ const handleSubmit = () => {
     key: idCounter++,
     ...formState,
   });
-  
+
   formRef.value.resetFields();
   formState.is_deleted = false;
 };
