@@ -104,7 +104,7 @@ const columns: TableColumnType[] = [
     dataIndex: 'is_deleted',
     filters: [
       { text: 'Active', value: false },
-      { text: 'Deleted', value: true },
+      { text: 'Pending Audit', value: true },
     ],
     onFilter: (value, record) => record.is_deleted === value,
   },
