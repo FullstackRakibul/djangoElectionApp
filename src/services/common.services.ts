@@ -95,10 +95,16 @@ export const getUpzillahListService = async () => {
   return response;
 };
 
+// details service
+
+export const getUpzillahDetailsService = async () => {
+
+}
+
 
 // address services 
 
-export const addressCreateService = async (values: addressInterface) => {
+export const addressCreateService = async (values: any) => {
   const apiInstance = electionHttpJson()
   const payload = {
     line1: values.line1,
@@ -107,8 +113,8 @@ export const addressCreateService = async (values: addressInterface) => {
     upazila_id: values.union,
     union_id: values.union,
     ward_id: values.ward,
-    city_corporation_id: values.city_corporation,
-    municipality_id: values.municipality
+    // city_corporation_id: values.city_corporation,
+    // municipality_id: values.municipality
   }
   const response = await apiInstance.post("/common/address/", payload)
 

@@ -16,6 +16,7 @@ export const electionCenterCreateService = async (data: electionCenterInterface)
     address: data.address
   }
 
+  console.log("Payload data for Center Create request :", payload)
   const apiInstance = electionHttpJson()
   const response = apiInstance.post("/election/election_center/", payload)
   return response
