@@ -1,51 +1,140 @@
 <template>
-  <a-card title="Create Election Center" class="max-w-2xl mx-auto">
-    <a-form layout="vertical" @finish="handleSubmit">
-      <!-- Center Name Fields -->
-      <a-form-item label="Center Name (English)" name="center_name"
-        :rules="[{ required: true, message: 'Please input center name!' }]">
-        <a-input v-model:value="formState.center_name" />
-      </a-form-item>
+  <a-card 
+    title="Create Election Center" 
+    class="shadow-lg rounded-xs transition-all duration-300 hover:shadow-xl mb-8"
+  >
+    <a-form layout="vertical" :model="formState" @finish="handleSubmit" class="p-6">
+      <a-row :gutter="24">
+        <!-- Left Column -->
+        <a-col :span="12" class="space-y-4">
+          <a-form-item 
+            label="Center Name (English)"
+            name="center_name"
+            :rules="[{ required: true, message: 'Please input center name!' }]"
+          >
+            <a-input 
+              v-model:value="formState.center_name" 
+              class="w-full rounded-md border-gray-300 focus:border-blue-500"
+            />
+          </a-form-item>
 
-      <a-form-item label="কেন্দ্রের নাম (বাংলা)" name="center_name_ban"
-        :rules="[{ required: true, message: 'Please input Bengali center name!' }]">
-        <a-input v-model:value="formState.center_name_ban" />
-      </a-form-item>
+          <a-form-item 
+            label="কেন্দ্রের নাম (বাংলা)"
+            name="center_name_ban"
+            :rules="[{ required: true, message: 'Please input Bengali center name!' }]"
+          >
+            <a-input 
+              v-model:value="formState.center_name_ban" 
+              class="w-full rounded-md border-gray-300 focus:border-blue-500"
+            />
+          </a-form-item>
 
-      <!-- Address Section -->
-      <div class="space-y-4">
-        <a-form-item label="Division" name="division" :rules="[{ required: true, message: 'Please select division!' }]">
-          <a-select v-model:value="formState.address.division" show-search :options="divisionOptions"
-            placeholder="Select Division" @change="handleDivisionChange" />
-        </a-form-item>
+          <a-form-item 
+            label="Division"
+            name="division"
+            :rules="[{ required: true, message: 'Please select division!' }]"
+          >
+            <a-select
+              v-model:value="formState.address.division"
+              show-search
+              :options="divisionOptions"
+              placeholder="Select Division"
+              @change="handleDivisionChange"
+              class="w-full rounded-md"
+            />
+          </a-form-item>
 
-        <a-form-item label="District" name="district" :rules="[{ required: true, message: 'Please select district!' }]">
-          <a-select v-model:value="formState.address.district" show-search :options="districtOptions"
-            placeholder="Select District" :disabled="!formState.address.division" @change="handleDistrictChange" />
-        </a-form-item>
+          <a-form-item 
+            label="District"
+            name="district"
+            :rules="[{ required: true, message: 'Please select district!' }]"
+          >
+            <a-select
+              v-model:value="formState.address.district"
+              show-search
+              :options="districtOptions"
+              placeholder="Select District"
+              :disabled="!formState.address.division"
+              @change="handleDistrictChange"
+              class="w-full rounded-md"
+            />
+          </a-form-item>
+        </a-col>
 
-        <a-form-item label="Upazila" name="upazila" :rules="[{ required: true, message: 'Please select upazila!' }]">
-          <a-select v-model:value="formState.address.upazila" show-search :options="upazilaOptions"
-            placeholder="Select Upazila" :disabled="!formState.address.district" @change="handleUpazilaChange" />
-        </a-form-item>
+        <!-- Right Column -->
+        <a-col :span="12" class="space-y-4">
+          <a-form-item 
+            label="Upazila"
+            name="upazila"
+            :rules="[{ required: true, message: 'Please select upazila!' }]"
+          >
+            <a-select
+              v-model:value="formState.address.upazila"
+              show-search
+              :options="upazilaOptions"
+              placeholder="Select Upazila"
+              :disabled="!formState.address.district"
+              @change="handleUpazilaChange"
+              class="w-full rounded-md"
+            />
+          </a-form-item>
 
-        <a-form-item label="Union" name="union" :rules="[{ required: true, message: 'Please select union!' }]">
-          <a-select v-model:value="formState.address.union" show-search :options="unionOptions"
-            placeholder="Select Union" :disabled="!formState.address.upazila" />
-        </a-form-item>
+          <a-form-item 
+            label="Union"
+            name="union"
+            :rules="[{ required: true, message: 'Please select union!' }]"
+          >
+            <a-select
+              v-model:value="formState.address.union"
+              show-search
+              :options="unionOptions"
+              placeholder="Select Union"
+              :disabled="!formState.address.upazila"
+              class="w-full rounded-md"
+            />
+          </a-form-item>
 
-        <a-form-item label="Ward" name="ward" :rules="[{ required: true, message: 'Please select ward!' }]">
-          <a-select v-model:value="formState.address.ward" show-search :options="wardOptions" placeholder="Select Ward"
-            :disabled="!formState.address.union" />
-        </a-form-item>
+          <a-form-item 
+            label="Ward"
+            name="ward"
+            :rules="[{ required: true, message: 'Please select ward!' }]"
+          >
+            <a-select
+              v-model:value="formState.address.ward"
+              show-search
+              :options="wardOptions"
+              placeholder="Select Ward"
+              :disabled="!formState.address.union"
+              class="w-full rounded-md"
+            />
+          </a-form-item>
 
-        <a-form-item label="Address Line 1" name="line1"
-          :rules="[{ required: true, message: 'Please input address line!' }]">
-          <a-input v-model:value="formState.address.line1" />
-        </a-form-item>
-      </div>
+          <a-form-item 
+            label="Address Line 1"
+            name="line1"
+            :rules="[{ required: true, message: 'Please input address line!' }]"
+          >
+            <a-input 
+              v-model:value="formState.address.line1" 
+              class="w-full rounded-md border-gray-300 focus:border-blue-500"
+            />
+          </a-form-item>
+        </a-col>
+      </a-row>
 
-      <a-button type="primary" html-type="submit" block>Submit</a-button>
+ <a-form-item :wrapper-col="{ offset: 16, span: 8 }">
+
+
+      <a-button 
+        type="primary" 
+        html-type="submit" 
+        block
+        class="mt-6 rounded-lg bg-blue-600 hover:bg-blue-700 transition-colors duration-300"
+         @click="handleSubmit" 
+      >
+        Create Center
+      </a-button> 
+    </a-form-item>
     </a-form>
   </a-card>
 </template>
@@ -55,7 +144,9 @@ import { ref, reactive, computed, onMounted } from 'vue';
 import { message } from 'ant-design-vue';
 import type { SelectProps } from 'ant-design-vue';
 import { getDistrictListService, getDivisionListService, getUnionListService, getUpzillahListService, getWordListService } from '@/services/common.services';
+import { electionCenterCreateService } from '@/services/election/election-center.services';
 
+const submitting = ref(false);
 // Define interfaces
 interface Address {
   line1: string;
@@ -127,24 +218,52 @@ const handleUpazilaChange = () => {
   formState.address.ward = null;
 };
 
-// Submit handler
-const handleSubmit = () => {
-  const payload = {
-    center_name: formState.center_name,
-    center_name_ban: formState.center_name_ban,
-    address_details: {
-      line1: formState.address.line1,
-      division: formState.address.division,
-      district: formState.address.district,
-      upazila: formState.address.upazila,
-      union: formState.address.union,
-      ward: formState.address.ward
-    }
-  };
 
-  console.log('Submission Payload:', payload);
-  // Here you would call your API
-  message.success('Form submitted successfully!');
+// Modified submit handler
+const handleSubmit = async () => {
+
+  console.log("Form submit click ")
+
+  try {
+    submitting.value = true;
+    
+    const payload = {
+      center_name: formState.center_name,
+      center_name_ban: formState.center_name_ban,
+      address_details: {
+        line1: formState.address.line1,
+        division: formState.address.division,
+        district: formState.address.district,
+        upazila: formState.address.upazila,
+        union: formState.address.union,
+        ward: formState.address.ward
+      }
+    };
+
+    console.log("Submitting payload:", payload);
+    
+    const response = await electionCenterCreateService(payload);
+    console.log('Creation response:', response.data);
+
+    // Reset form after successful submission
+    formState.center_name = '';
+    formState.center_name_ban = '';
+    formState.address = {
+      line1: '',
+      division: null,
+      district: null,
+      upazila: null,
+      union: null,
+      ward: null
+    };
+
+    message.success('Center created successfully!');
+  } catch (error) {
+    console.error('Submission error:', error);
+    message.error('Failed to create center!');
+  } finally {
+    submitting.value = false;
+  }
 };
 
 // Fetch initial data
@@ -158,7 +277,6 @@ onMounted(async () => {
     districts.value = districtsRes.data.data.map((d: any) => ({ value: d.id, label: d.district_name_ban, division: d.division }));
 
     const upazilasRes = await getUpzillahListService();
-    console.log("UpZillah response service : " ,upazilasRes );
     upazilas.value = upazilasRes.data.data.map((u: any) => ({  value: u.id, label: u.upazila_name_ban, district: u.district }));
 
     const unionsRes = await getUnionListService();
@@ -177,5 +295,20 @@ onMounted(async () => {
 <style scoped>
 .ant-select {
   width: 100%;
+}
+.ant-select-selector {
+  @apply rounded-md border-gray-300 hover:border-blue-500 focus:border-blue-500 transition-all duration-300;
+}
+
+.ant-input {
+  @apply rounded-md border-gray-300 hover:border-blue-500 focus:border-blue-500 transition-all duration-300;
+}
+
+.ant-form-item-label label {
+  @apply font-medium text-gray-700;
+}
+
+.ant-card-head-title {
+  @apply text-2xl font-bold text-gray-800;
 }
 </style>
