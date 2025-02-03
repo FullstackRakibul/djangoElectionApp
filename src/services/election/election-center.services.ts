@@ -10,15 +10,11 @@ export const electionCenterListDataService = async () => {
 
 
 export const electionCenterCreateService = async (data: electionCenterInterface) => {
-  const payload = {
-    center_name: data.center_name,
-    center_name_ban: data.center_name_ban,
-    address: data.address
-  }
 
-  console.log("Payload data for Center Create request :", payload)
+
+  console.log("Payload data for Center Create request :", data)
   const apiInstance = electionHttpJson()
-  const response = apiInstance.post("/election/election_center/", payload)
+  const response = apiInstance.post("/election/election_center/", data)
   return response
 
 }

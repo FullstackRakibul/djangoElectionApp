@@ -1,8 +1,41 @@
 <template>
   <div class="p-4 bg-gray-50 min-h-screen">
-    <!-- Main Form Section -->
+    <!-- Create Form -->
+    <ElectionCenterCreateForm />
 
-    <ElectionCenterCreateForm/>
+    <!-- Search and Filters -->
+    <a-card class="shadow-sm">
+      <a-row :gutter="16" class="items-center">
+        <a-col :span="8">
+          <a-input
+            v-model:value="searchQuery"
+            placeholder="Search by center name"
+            allow-clear
+          >
+            <template #prefix>
+              <SearchOutlined />
+            </template>
+          </a-input>
+        </a-col>
+        <a-col :span="8">
+          <a-select
+            v-model:value="selectedDivision"
+            placeholder="Filter by division"
+            :options="uniqueDivisions"
+            allow-clear
+          />
+        </a-col>
+        <a-col :span="8">
+          <a-select
+            v-model:value="selectedDistrict"
+            placeholder="Filter by district"
+            :options="uniqueDistricts"
+            allow-clear
+          />
+        </a-col>
+      </a-row>
+    </a-card>
+
     <!-- Election Center List -->
     <a-card
       title="Election Centers"
@@ -10,7 +43,7 @@
       :headStyle="{ borderBottom: '2px solid #1890ff' }"
     >
       <a-table
-        :dataSource="electionCenters"
+        :dataSource="filteredCenters"
         :columns="centerColumns"
         :loading="loadingCenters"
         :pagination="{ pageSize: 10 }"
@@ -19,7 +52,9 @@
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'address_details'">
             <div class="space-y-1">
-              <div class="font-medium">{{ record.address_details?.line1 }}</div>
+              <div class="font-medium text-gray-900">
+                {{ record.address_details?.line1 }}
+              </div>
               <div class="text-gray-600 text-sm">
                 {{ formatAddress(record.address_details) }}
               </div>
@@ -27,8 +62,12 @@
           </template>
           <template v-else-if="column.key === 'actions'">
             <a-space>
-              <a-button type="link" size="small">Edit</a-button>
-              <a-button type="link" danger size="small">Delete</a-button>
+              <a-button type="link" size="small" class="text-blue-600 hover:text-blue-800">
+                Edit
+              </a-button>
+              <a-button type="link" danger size="small" class="hover:text-red-800">
+                Delete
+              </a-button>
             </a-space>
           </template>
         </template>
@@ -38,162 +77,124 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted } from 'vue'
-import { message } from 'ant-design-vue'
-import type { FormInstance } from 'ant-design-vue'
-import type {
-  addressInterface,
-  divisionListInterface,
-  districtListInterface,
-  upzillahListInterface,
-  unionListInterface,
-  wordListInterface
-} from '@/interface/common.interface'
-
-import type { electionCenterInterface } from '@/interface/election.interface'
-import { electionCenterCreateService, electionCenterListDataService } from '@/services/election/election-center.services'
-import { addressCreateService, getAddressListService, getDivisionListService, getUnionListService, getUpzillahListService } from '@/services/common.services'
-import { getDistrictListService } from '@/services/district.services'
-import ElectionCenterCreateForm from '@/views/forms/election/ElectionCenterCreate.form.vue'
-// Lifecycle Hooks
-onMounted(() => {
-  loadInitialData()
-})
+import { ref, computed, onMounted } from 'vue';
+import { SearchOutlined } from '@ant-design/icons-vue';
+import { message } from 'ant-design-vue';
+import { electionCenterListDataService } from '@/services/election/election-center.services';
+import type { electionCenterInterface, electionCenterListInterface } from '@/interface/election.interface';
 
 
-// Data Fetching
-const loadInitialData = async () => {
+import ElectionCenterCreateForm from '@/views/forms/election/ElectionCenterCreate.form.vue';
+// Data
+const electionCenters = ref<electionCenterListInterface[]>([]);
+const loadingCenters = ref(false);
+const searchQuery = ref('');
+const selectedDivision = ref<number | null>(null);
+const selectedOpzillah = ref<number | null>(null);
+const selectedUnion = ref<number | null>(null);
+const selectedWord = ref<number | null>(null);
+
+// Fetch data
+const refreshData = async () => {
   try {
-    loadingAddresses.value = true
-    loadingCenters.value = false
-
-    const [divisionsRes,  districtRes, upzillahRes, unionRes,centersRes,addressesRes] = await Promise.all([
-      getDivisionList(),
-      getDistrictList(),
-      getUpzillahList(),
-      getUnionList(),
-      getElectionCenters(),
-      getAddressList()
-    ])
-
-    divisions.value = divisionsRes
-    addresses.value = addressesRes
-    districts.value =districtRes
-    upazilas.value =upzillahRes
-    unions.value = unionRes
-    electionCenters.value = centersRes
-
+    loadingCenters.value = true;
+    const response = await electionCenterListDataService();
+    electionCenters.value = response.data.data;
   } catch (error) {
-    message.error('Error loading initial data!')
-    console.error(error)
+    message.error('Error loading centers!');
+    console.error(error);
   } finally {
-    loadingAddresses.value = false
-    loadingCenters.value = false
+    loadingCenters.value = false;
   }
-}
+};
 
+// Initial load
+onMounted(refreshData);
 
-// Election Center Form
-const electionFormRef = ref<FormInstance>()
-const electionCenterForm = reactive({
-  center_name: '',
-  center_name_ban: '',
-  address: undefined as number | undefined
-})
-const creatingCenter = ref(false)
+// Filtered data
+const filteredCenters = computed(() => {
+  return electionCenters.value.filter(center => {
+    const matchesSearch = center.center_name.toLowerCase().includes(searchQuery.value.toLowerCase());
+    const matchesDivision = selectedDivision.value ? 
+      center.address_details.division === selectedDivision.value : true;
+    const matchesDistrict = selectedDistrict.value ? 
+      center.address_details.district === selectedDistrict.value : true;
+    
+    return matchesSearch && matchesDivision && matchesDistrict;
+  });
+});
 
-// Address Form
-const addressFormRef = ref<FormInstance>()
-const addressForm = reactive({
-  line1: '',
-  division: undefined as number | undefined,
-  district: undefined as number | undefined,
-  upazila: undefined as number | undefined,
-  union: undefined as number | undefined,
-  ward: undefined as number | undefined
-})
-const creatingAddress = ref(false)
+// Unique filter options
+const uniqueDivisions = computed(() => {
+  const divisions = new Set(
+    electionCenters.value.map(c => c.address_details.division)
+  );
+  return Array.from(divisions).map(id => ({
+    value: id,
+    label: getDivisionName(id)
+  }));
+});
 
-// Data Lists
-const divisions = ref<divisionListInterface[]>([])
-const districts = ref<districtListInterface[]>([])
-const upazilas = ref<upzillahListInterface[]>([])
-const unions = ref<unionListInterface[]>([])
-const addresses = ref<addressInterface[]>([])
-const electionCenters = ref<electionCenterInterface[]>([])
+const uniqueDistricts = computed(() => {
+  const districts = new Set(
+    electionCenters.value.map(c => c.address_details.district)
+  );
+  return Array.from(districts).map(id => ({
+    value: id,
+    label: getDistrictName(id)
+  }));
+});
 
+// Address formatting
+const formatAddress = (address: any) => {
+  const parts = [
+    address.ward ? `Ward: ${getWardName(address.ward)}` : '',
+    address.union ? `Union: ${getUnionName(address.union)}` : '',
+    address.upazila ? `Upazila: ${getUpazilaName(address.upazila)}` : '',
+    address.district ? `District: ${getDistrictName(address.district)}` : '',
+    address.division ? `Division: ${getDivisionName(address.division)}` : ''
+  ].filter(Boolean);
 
-const divisionList = ref(<divisionListInterface[]>[])
-const districtList = ref(<districtListInterface[]>[])
-const upazilaList = ref(<upzillahListInterface[]>[])
-const unionList = ref(<unionListInterface[]>[])
-const wordList = ref(<wordListInterface[]>[])
-const addresList = ref(<addressInterface[]>[])
+  return parts.join(' • ');
+};
 
-// Loading States
-const loadingDivisions = ref(false)
-const loadingDistricts = ref(false)
-const loadingUpazilas = ref(false)
-const loadingUnions = ref(false)
-const loadingAddresses = ref(false)
-const loadingCenters = ref(false)
+// Name resolution functions (implement with your services)
+const getDivisionName = (id: number) => {
+  return divisions.value.find(d => d.id === id)?.division_name_ban || 'N/A';
+};
 
-// Options for Selects Address Create Form 
-const divisionOptions = computed(() => 
-  divisions.value.map(d => ({
-    value: d.id,
-    label: d.division_name_ban
-  }))
-)
+const getDistrictName = (id: number) => {
+  return divisions.value.find(d => d.id === id)?.district_name_ban || 'N/A';
+};
+const getUpazilaName = (id: number) => {
+  return districts.value.find(d => d.id === id)?.district_name_ban || 'N/A';
+};
+const getUnionName = (id: number) => {
+  return districts.value.find(d => d.id === id)?.district_name_ban || 'N/A';
+};
+const getWardName = (id: number) => {
+  return districts.value.find(d => d.id === id)?.district_name_ban || 'N/A';
+};
 
-const districtOptions = computed(() =>
-  districts.value
-    .filter(d => d.division === addressForm.division)
-    .map(d => ({
-      value: d.id,
-      label: d.district_name_ban
-    }))
-)
+// ... implement similar functions for upazila, union, ward
 
-const upazilaOptions = computed(() =>{
-  console.log("Upazillah option for Create form : ",upazilas.value ,addressForm.district  )
-  upazilas.value
-    .filter(u => u.district === addressForm.district)
-    .map(u => ({
-      value: u.id,
-      label: u.upazila_name_ban
-    }))
-    }
-)
-
-const unionOptions = computed(() =>
-  unions.value
-    .filter(u => u.upazila === addressForm.upazila)
-    .map(u => ({
-      value: u.id,
-      label: u.union_name_ban
-    }))
-)
-
-const addressOptions = computed(() =>
-  addresses.value.map(a => ({
-    value: a.id,
-    label: `${a.line1}, ${getDistrictName(a.district)}, ${getDivisionName(a.division)},${getUpzillahName(a.upazila)}`
-  }))
-)
-
-// Table Columns
+// Table columns
 const centerColumns = [
   {
-    title: 'S/L',
+    title: 'ID',
     dataIndex: 'id',
-    //sorter: (a: electionCenterInterface, b: electionCenterInterface) => a.id - b.id
+    width: 80,
+    sorter: (a: electionCenterInterface, b: electionCenterInterface) => a.id - b.id
   },
   {
     title: 'Center Name',
     dataIndex: 'center_name',
-    // sorter: (a: electionCenterInterface, b: electionCenterInterface) => 
-    //   a.center_name.localeCompare(b.center_name)
+    sorter: (a: electionCenterInterface, b: electionCenterInterface) => 
+      a.center_name.localeCompare(b.center_name)
+  },
+  {
+    title: 'Bengali Name',
+    dataIndex: 'center_name_ban'
   },
   {
     title: 'Address Details',
@@ -201,227 +202,30 @@ const centerColumns = [
   },
   {
     title: 'Actions',
-    key: 'actions'
+    key: 'actions',
+    width: 150
   }
-]
-
-// Helper Functions
-// const getDivisionName = async (id: number) => {
-//   const response = await getDivisionListService()
-//   divisions.value= response.data.data
-//   divisions.value.find(d => d.id === id)?.division_name_ban || 'N/A'
-// }
-
-const getDivisionName = (id: number) => {
-  return divisions.value.find(d => d.id === id)?.division_name_ban || 'N/A'
-}
-
-
-const getDistrictName = (id: number) => {
-  return districts.value.find(d => d.id === id)?.district_name_ban || 'N/A'
-}
-
-const getUpzillahName = (id: number) => {
-  return upazilas.value.find(u => u.id === id)?.upazila_name_ban || 'N/A'
-}
-const getUnionName = (id: number) => {
-  return upazilas.value.find(u => u.id === id)?.upazila_name_ban || 'N/A'
-}
-const getWordhName = (id: number) => {
-  return upazilas.value.find(u => u.id === id)?.upazila_name_ban || 'N/A'
-}
-
-const formatAddress = (address: addressInterface) => {
-  const parts = [
-    address.ward ? `ওয়ার্ড: ${getWordhName(address.ward)}` : '',
-    address.union ? `ইউনিয়ন: ${getUnionName(address.union)}` : '',
-    address.upazila ? `উপজেলা: ${getUpzillahName(address.upazila)}` : '',
-    address.district ? `জেলা: ${getDistrictName(address.district)}` : '',
-    address.division ? `বিভাগ: ${getDivisionName(address.division)}` : ''
-  ].filter(Boolean)
-
-  return parts.join(' • ')
-}
-
-// Form Handlers
-const handleCreateElectionCenter = async () => {
-  try {
-    creatingCenter.value = true
-    const response = await electionCenterCreateService(electionCenterForm)
-    electionCenters.value = [response.data.data, ...electionCenters.value]
-    console.log('Election Center Data :', electionCenters.value , response.data.data)
-    message.success('Election center created successfully!')
-    electionFormRef.value?.resetFields()
-  } catch (error) {
-    message.error('Error creating election center!')
-    console.error(error)
-  } finally {
-    creatingCenter.value = false
-  }
-}
-
-const handleCreateAddress = async () => {
-  try {
-    creatingAddress.value = true
-    const response = await addressCreateService(addressForm)
-    console.log("Create Address Data : " , response.data.data)
-    addresses.value = [response.data, ...addresses.value]
-    message.success('Address created successfully!')
-    addressFormRef.value?.resetFields()
-  } catch (error) {
-    message.error('Error creating address!')
-    console.error(error)
-  } finally {
-    creatingAddress.value = false
-  }
-}
-
-
- // handel select value changes is address create form 
- // Add Upazila change handler
-const handleUpazilaChange = async (upazilaId: number) => {
-  // Clear previous union selection
-  addressForm.union = undefined;
-  
-  // Load unions for selected upazila
-  // if (upazilaId) {
-  //   await loadUnions(upazilaId);
-  // }
-};
-
-const loadUnions =()=>{
-
-}
-
-// Initial Loading Helper function implement 
-
-const getDivisionList = async () => {
-  try {
-    const response = await getDivisionListService()
-    if (response.status === 200) {
-      divisionList.value = response.data.data
-      //console.log("initial loading division data : ",response.data.data)
-     return response.data.data
-    } else {
-      message.error("Division response error !!!")
-    }
-
-  } catch (error) {
-    console.log("Something went wrong on divison !!!")
-  }
-}
-
-// district 
-
-const getDistrictList = async () => {
-  try {
-
-    const response = await getDistrictListService()
-    console.log(response)
-    if (response.status === 200) {
-      districtList.value = response.data.data
-      //console.log("initial loading district data : ",response.data.data)
-      return response.data.data
-    } else {
-      message.error("Division response error !!!")
-    }
-
-  } catch (error) {
-    console.log("Something went wrong on district !!!")
-  }
-}
-// Upzillah 
-
-const getUpzillahList = async () => {
-  try {
-
-    const response = await getUpzillahListService()
-    console.log(response)
-    if (response.status === 200) {
-      upazilaList.value = response.data.data
-      //console.log("initial loading upzillah data : ",response.data.data)
-      return response.data.data
-    } else {
-      message.error("Upzillah response error !!!")
-    }
-
-  } catch (error) {
-    console.log("Something went wrong on district !!!")
-  }
-}
-// union 
-
-const getUnionList = async () => {
-  try {
-
-    const response = await getUnionListService()
-    console.log(response)
-    if (response.status === 200) {
-      unionList.value = response.data.data
-      //console.log("initial loading upzillah data : ",response.data.data)
-      return response.data.data
-    } else {
-      message.error("Uion response error !!!")
-    }
-
-  } catch (error) {
-    console.log("Something went wrong on district !!!")
-  }
-}
-
-// now get full address 
-
-const getAddressList = async () => {
-  try {
-
-    const response = await getAddressListService()
-    console.log(response)
-    if (response.status === 200) {
-      addresList.value = response.data.data
-      console.log("initial loading Address data : ",response.data.data)
-      return response.data.data
-    } else {
-      message.error("Address response error !!!")
-    }
-
-  } catch (error) {
-    console.log("Something went wrong on Address !!!")
-  }
-}
-
-
-
-// election center 
-
-const getElectionCenters = async ()=>{
-  const response = await electionCenterListDataService()
-  if (response.status===200) {
-    electionCenters.value=response.data.data
-    console.log("initial loading election center data : ",response.data.data)
-    return response.data.data
-  }else {
-      message.error("Center Is Empty !!!")
-    }
-}
-
+];
 </script>
 
 <style scoped>
-.ant-card {
-  border-radius: 0.75rem;
-  overflow: hidden;
+.ant-input-affix-wrapper {
+  @apply rounded-lg border-gray-300 hover:border-blue-500 focus:border-blue-500 transition-all duration-300;
 }
 
-:deep(.ant-table-thead > tr > th) {
-  background-color: #f8fafc !important;
-  font-weight: 600;
+.ant-select-selector {
+  @apply rounded-lg border-gray-300 hover:border-blue-500 focus:border-blue-500 transition-all duration-300;
 }
 
-:deep(.ant-select-selector) {
-  border-radius: 0.5rem !important;
+.ant-table {
+  @apply rounded-lg overflow-hidden;
 }
 
-:deep(.ant-input) {
-  border-radius: 0.5rem;
+.ant-table-thead > tr > th {
+  @apply bg-gray-100 font-semibold text-gray-700;
+}
+
+.ant-table-tbody > tr:hover > td {
+  @apply bg-blue-50;
 }
 </style>
