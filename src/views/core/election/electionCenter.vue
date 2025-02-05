@@ -90,6 +90,7 @@ const electionCenters = ref<electionCenterListInterface[]>([]);
 const loadingCenters = ref(false);
 const searchQuery = ref('');
 const selectedDivision = ref<number | null>(null);
+const selectedDistrict = ref<number | null>(null);
 const selectedOpzillah = ref<number | null>(null);
 const selectedUnion = ref<number | null>(null);
 const selectedWord = ref<number | null>(null);

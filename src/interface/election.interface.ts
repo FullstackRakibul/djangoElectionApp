@@ -6,7 +6,7 @@ export interface electionCenterListInterface {
   center_name: string;
   center_name_ban?: string;
   address?: number;
-  address_details?: addressInterface;
+  address_details: addressInterface;
 }
 
 export interface electionCenterInterface {
