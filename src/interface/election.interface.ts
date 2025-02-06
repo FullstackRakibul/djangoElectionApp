@@ -30,11 +30,19 @@ export interface electionInfoInterface {
 }
 
 export interface electionDataInterface {
+  // key?: number;
+  // vote_count: number;
+  // election: number;
+  // worker: [];
+  // created_by?: number;
+  // updated_by?: number;
+
+  key: number;
   vote_count: number;
+  is_deleted: boolean;
   election: number;
-  worker: [];
-  created_by?: number;
-  updated_by?: number;
+  worker: number;
+  election_center: number;
 }
 
 export interface electionDetailsInterface {

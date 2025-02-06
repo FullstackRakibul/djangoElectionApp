@@ -69,6 +69,11 @@
 import { reactive, ref, computed } from 'vue';
 import { SearchOutlined } from '@ant-design/icons-vue';
 import type { TableColumnType } from 'ant-design-vue';
+import { createElectionDataService } from '@/services/election/election.data.services';
+import type { electionCenterInterface, electionDataInterface, electionInfoInterface } from '@/interface/election.interface';
+import type { GeneralUserInterface } from '@/interface/user.interface';
+import { getElectionInfoDataService } from '@/services/election/election.info.services';
+import { UserListService, UserListWithOutType } from '@/services/GeneralUser.services';
 
 interface ElectionData {
   key: number;
@@ -91,7 +96,26 @@ const formState = reactive({
   election_center: 0,
 });
 
-const dataSource = ref<ElectionData[]>([]);
+const dataSource = ref<electionDataInterface[]>([]);
+const ElectionInfoData = ref<electionInfoInterface[]>([]);
+const WorkerData = ref<GeneralUserInterface[]>([]);
+const ElectionCenterData = ref<electionCenterInterface[]>([]);
+
+
+const fetchElectionInfoData = async () => {
+  const response = await getElectionInfoDataService();
+  ElectionInfoData.value = response.data;
+};
+const fetchWorkerData = async () => {
+  const response = await UserListWithOutType();
+  ElectionInfoData.value = response.data;
+};
+const fetchElectionCenterData = async () => {
+  const response = await getElectionInfoDataService();
+  ElectionInfoData.value = response.data;
+};
+
+
 
 const columns: TableColumnType[] = [
   {
@@ -121,14 +145,20 @@ const filteredData = computed(() => {
   );
 });
 
-const handleSubmit = () => {
+const handleSubmit = async () => {
   dataSource.value.push({
     key: idCounter++,
     ...formState,
   });
+  formState.is_deleted = false;
+
+  console.log('Submitted data:', formState);
+  const response = await createElectionDataService(formState);
+  dataSource.value = response.data;
 
   formRef.value.resetFields();
-  formState.is_deleted = false;
+
+  
 };
 </script>
 

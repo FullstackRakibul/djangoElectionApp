@@ -19,16 +19,7 @@ watch(
   },
   { immediate: true }
 );
-// Handle menu item click
-// const handleClick: MenuProps['onClick'] = (menuInfo) => {
-//   const clickedItem = items.value
-//     .flatMap(item => item.children ? item.children : [item])  // Flatten the structure to find both parent and child items
-//     .find(item => item.key === menuInfo.key);  // Find the item by key
 
-//   if (clickedItem && clickedItem.keyPath) {
-//     router.push(clickedItem.keyPath);  // Navigate to the correct route
-//   }
-// };
 
 
 // Recursive function to find the clicked item in the menu structure

@@ -38,6 +38,13 @@ export const UserListService = async (): Promise<GeneralUserInterface[]> => {
 
 }
 
+
+export const UserListWithOutType = async () => {
+  const apiInstance = electionHttpJson();
+  const response = await apiInstance.get("/account/user/");
+  return response.data
+}
+
 export const UserCreateService = async (values: GeneralUserInterface) => {
   const apiInstance = electionHttpJson()
   const payload = {
