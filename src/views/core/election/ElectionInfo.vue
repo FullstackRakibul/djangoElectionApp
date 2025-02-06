@@ -1,11 +1,16 @@
 <script lang="ts" setup>
-import type { electionInfoInterface } from '@/interface/election.interface';
+import type { electionInfoInterface, electionPartyInterfcae } from '@/interface/election.interface';
 import { createElectionInfoDataService, getElectionInfoDataService } from '@/services/election/election.info.services';
 import { onMounted, ref, reactive } from 'vue';
 import { message } from 'ant-design-vue';
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons-vue';
+import { getElectionPartyService } from '@/services/common.services';
+import type { GeneralUserInterface } from '@/interface/user.interface';
+import { UserListWithOutType } from '@/services/GeneralUser.services';
 
 const ElectionInfoData = ref<electionInfoInterface[]>([]);
+const electionPartyData = ref<electionPartyInterfcae[]>([]);
+
 const formState = reactive({
   election_info_name: '',
   election_info_name_ban: '',
@@ -19,6 +24,8 @@ const formState = reactive({
 
 onMounted(() => {
   fetchElectionInfo();
+  fetchElectionPartyData();
+  fetchUserListData();
 });
 
 const fetchElectionInfo = async () => {
@@ -53,8 +60,6 @@ const electionInfoDataColumn = [
   {
     title: "স্ট্যাটাস",
     dataIndex: "is_deleted",
-    // customRender: ({ text }: { text: boolean }) => 
-    //   text ? <a-tag color="red">বাতিল</a-tag> : <a-tag color="green">সক্রিয়</a-tag>
   }
 ];
 
@@ -73,7 +78,7 @@ const handleSubmit = async () => {
       total_voter: formState.total_voter || 0,
       total_votes: formState.total_votes || 0,
     });
-    
+
     message.success('নির্বাচন সফলভাবে তৈরি হয়েছে');
     resetForm();
     await fetchElectionInfo();
@@ -94,6 +99,25 @@ const resetForm = () => {
     parties: [],
     workers: [],
   });
+};
+
+const fetchElectionPartyData = async () => {
+  try {
+    const response = await getElectionPartyService();
+    electionPartyData.value = response.data.data;
+  } catch (error) {
+    message.error('ডেটা লোড করতে সমস্যা হয়েছে');
+  }
+};
+
+const userListData = ref<GeneralUserInterface[]>([]);
+const fetchUserListData = async () => {
+  try {
+    const response = await UserListWithOutType();
+    userListData.value = response.data;
+  } catch (error) {
+    message.error('ডেটা লোড করতে সমস্যা হয়েছে');
+  }
 };
 </script>
 
@@ -150,11 +174,13 @@ const resetForm = () => {
           <div class="space-y-6">
             <!-- Candidates -->
             <div v-for="(candidate, index) in formState.candidates" :key="`candidate-${index}`" class="flex gap-2">
-              <a-input-number
-                v-model:value="formState.candidates[index]"
-                placeholder="প্রার্থী আইডি"
-                class="flex-1"
-              />
+              <a-select
+                  v-model:value="formState.candidates[index]"
+                  placeholder="প্রার্থী নির্বাচন করুন"
+                  class="flex-1"
+                  :options="(userListData || []).map(user => ({ label: user.username, value: user.id }))"
+                />
+
               <a-button danger @click="removeField('candidates', index)">
                 <delete-outlined />
               </a-button>
@@ -165,10 +191,11 @@ const resetForm = () => {
 
             <!-- Parties -->
             <div v-for="(party, index) in formState.parties" :key="`party-${index}`" class="flex gap-2">
-              <a-input-number
+              <a-select
                 v-model:value="formState.parties[index]"
-                placeholder="দল আইডি"
+                placeholder="দল নির্বাচন করুন"
                 class="flex-1"
+                :options="(electionPartyData ||[]).map(party => ({ label: party.party_name, value: party.id }))"
               />
               <a-button danger @click="removeField('parties', index)">
                 <delete-outlined />
@@ -180,11 +207,12 @@ const resetForm = () => {
 
             <!-- Workers -->
             <div v-for="(worker, index) in formState.workers" :key="`worker-${index}`" class="flex gap-2">
-              <a-input-number
-                v-model:value="formState.workers[index]"
-                placeholder="কর্মী আইডি"
-                class="flex-1"
-              />
+              <a-select
+                  v-model:value="formState.workers[index]"
+                  placeholder="কর্মী নির্বাচন করুন"
+                  class="flex-1"
+                  :options="(userListData || []).map(user => ({ label: user.phone, value: user.id }))"
+                />
               <a-button danger @click="removeField('workers', index)">
                 <delete-outlined />
               </a-button>

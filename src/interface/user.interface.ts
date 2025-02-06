@@ -1,6 +1,7 @@
 
 
 export interface GeneralUserInterface {
+  id?: number
   username?: string
   phone: string,
   email?: string,

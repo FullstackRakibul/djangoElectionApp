@@ -33,6 +33,7 @@ export const UserListService = async (): Promise<GeneralUserInterface[]> => {
     return enrichedUserList;
   } catch (error) {
     console.error('Error fetching user list:', error);
+    return [];
     throw error;
   }
 

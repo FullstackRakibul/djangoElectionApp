@@ -74,6 +74,7 @@ export interface electionType {
 }
 
 export interface electionPartyInterfcae {
+  id?: number;
   party_name: string;
   party_name_ban?: string;
   party_symbol: string;
