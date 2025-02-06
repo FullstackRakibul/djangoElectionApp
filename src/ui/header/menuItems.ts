@@ -11,6 +11,10 @@ import {
   ClusterOutlined,
   DeploymentUnitOutlined,
   ForkOutlined,
+  UserSwitchOutlined,
+  UsergroupDeleteOutlined,
+  UserAddOutlined,
+  ReconciliationOutlined
 } from "@ant-design/icons-vue";
 
 const selectedKeys = ref<string[]>(["1"]);
@@ -33,16 +37,19 @@ const items = ref([
         key: "2-1",
         label: "Users",
         keyPath: "/usertype_list",
+        icon: () => h(UserSwitchOutlined),
         children: [
           {
             key: "2-1-1",
             label: "User Type",
             keyPath: "/usertype_list",
+            icon: () => h(UsergroupDeleteOutlined),
           },
           {
             key: "2-1-2",
             label: "Users",
             keyPath: "/user_list",
+            icon: () => h(UserAddOutlined),
           },
         ]
       },
@@ -50,11 +57,13 @@ const items = ref([
         key: "2-3",
         label: "User Address",
         keyPath: "/add_address", // Route for user type list
+        icon: () => h(ForkOutlined),
       },
       {
         key: "2-4",
         label: "Party Details",
         keyPath: "/election-party", // Route for user type list
+        icon: () => h(ForkOutlined),
       },
     ],
   },
@@ -62,51 +71,55 @@ const items = ref([
     key: "3",
     icon: () => h(AuditOutlined),
     label: "Common",
+
     children: [
       {
         key: "3-1",
         label: "Country",
         keyPath: "/add_country",
+        icon: () => h(ReconciliationOutlined),
       },
-      // {
-      //   key: '3-2',
-      //   label: 'Company',
-      //   keyPath: '/add_company',
-      // },
       {
         key: "3-3",
         label: "Division",
         keyPath: "/add_division",
+        icon: () => h(ReconciliationOutlined),
       },
       {
         key: "3-4",
         label: "District",
         keyPath: "/add_district",
+        icon: () => h(ReconciliationOutlined),
       },
       {
         key: "3-5",
         label: "Municipality",
         keyPath: "/#",
+        icon: () => h(ReconciliationOutlined),
       },
       {
         key: "3-6",
         label: "CityCorporation",
         keyPath: "/#",
+        icon: () => h(ReconciliationOutlined),
       },
       {
         key: "3-7",
         label: "Upzilla",
         keyPath: "/add_upzillah",
+        icon: () => h(ReconciliationOutlined),
       },
       {
         key: "3-8",
         label: "Union",
         keyPath: "/add_union",
+        icon: () => h(ReconciliationOutlined),
       },
       {
         key: "3-9",
         label: "Ward",
         keyPath: "/add_ward",
+        icon: () => h(ReconciliationOutlined),
       },
     ],
   },
@@ -119,11 +132,13 @@ const items = ref([
         key: "4-1",
         label: "Checking and Evaluation",
         keyPath: "/#",
+        icon: () => h(ForkOutlined),
       },
       {
         key: "4-2",
         label: "Audit Result",
         keyPath: "/audit-result",
+        icon: () => h(ForkOutlined),
       },
     ],
   },
