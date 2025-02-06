@@ -85,6 +85,7 @@ import type { electionCenterInterface, electionCenterListInterface } from '@/int
 
 
 import ElectionCenterCreateForm from '@/views/forms/election/ElectionCenterCreate.form.vue';
+import type { districtListInterface, divisionListInterface, unionListInterface, upzillahListInterface, wordListInterface } from '@/interface/common.interface';
 // Data
 const electionCenters = ref<electionCenterListInterface[]>([]);
 const loadingCenters = ref(false);
@@ -95,7 +96,19 @@ const selectedOpzillah = ref<number | null>(null);
 const selectedUnion = ref<number | null>(null);
 const selectedWord = ref<number | null>(null);
 
-// Fetch data
+const divisions = ref<divisionListInterface[]>([]);
+const districts = ref<districtListInterface[]>([]);
+const upzillahs = ref<upzillahListInterface[]>([]);
+const unions = ref<unionListInterface[]>([]);
+const wards = ref<wordListInterface[]>([]);
+
+
+
+onMounted(() => {
+  refreshData();
+});
+
+// Fetch data with proper loading state
 const refreshData = async () => {
   try {
     loadingCenters.value = true;
@@ -109,26 +122,28 @@ const refreshData = async () => {
   }
 };
 
-// Initial load
-onMounted(refreshData);
-
-// Filtered data
+// Filtered data with null safety
 const filteredCenters = computed(() => {
   return electionCenters.value.filter(center => {
-    const matchesSearch = center.center_name.toLowerCase().includes(searchQuery.value.toLowerCase());
-    const matchesDivision = selectedDivision.value ? 
-      center.address_details.division === selectedDivision.value : true;
-    const matchesDistrict = selectedDistrict.value ? 
-      center.address_details.district === selectedDistrict.value : true;
+    const search = searchQuery.value.toLowerCase();
+    const name = center.center_name?.toLowerCase() || '';
+    const matchesSearch = name.includes(search);
     
+    const matchesDivision = selectedDivision.value ? 
+      center.address_details?.division === selectedDivision.value : true;
+      
+    const matchesDistrict = selectedDistrict.value ? 
+      center.address_details?.district === selectedDistrict.value : true;
     return matchesSearch && matchesDivision && matchesDistrict;
   });
 });
 
-// Unique filter options
+// Unique filter options with null checks
 const uniqueDivisions = computed(() => {
   const divisions = new Set(
-    electionCenters.value.map(c => c.address_details.division)
+    electionCenters.value
+      .map(c => c.address_details?.division)
+      .filter(id => id !== null && id !== undefined)
   );
   return Array.from(divisions).map(id => ({
     value: id,
@@ -138,7 +153,9 @@ const uniqueDivisions = computed(() => {
 
 const uniqueDistricts = computed(() => {
   const districts = new Set(
-    electionCenters.value.map(c => c.address_details.district)
+    electionCenters.value
+      .map(c => c.address_details?.district)
+      .filter(id => id !== null && id !== undefined)
   );
   return Array.from(districts).map(id => ({
     value: id,
@@ -146,60 +163,68 @@ const uniqueDistricts = computed(() => {
   }));
 });
 
-// Address formatting
+// Safe address formatting with null checks
 const formatAddress = (address: any) => {
   const parts = [
-    address.ward ? `Ward: ${getWardName(address.ward)}` : '',
-    address.union ? `Union: ${getUnionName(address.union)}` : '',
-    address.upazila ? `Upazila: ${getUpazilaName(address.upazila)}` : '',
-    address.district ? `District: ${getDistrictName(address.district)}` : '',
-    address.division ? `Division: ${getDivisionName(address.division)}` : ''
-  ].filter(Boolean);
+    address?.ward ? `Ward: ${getWardName(address.ward)}` : 'Ward: N/A',
+    address?.union ? `Union: ${getUnionName(address.union)}` : 'Union: N/A',
+    address?.upazila ? `Upazila: ${getUpazilaName(address.upazila)}` : 'Upazila: N/A',
+    address?.district ? `District: ${getDistrictName(address.district)}` : 'District: N/A',
+    address?.division ? `Division: ${getDivisionName(address.division)}` : 'Division: N/A'
+  ].filter(part => !part.endsWith('N/A')); // Remove N/A entries
 
-  return parts.join(' • ');
+  return parts.length > 0 ? parts.join(' • ') : 'Address information not available';
 };
 
-// Name resolution functions (implement with your services)
-const getDivisionName = (id: number) => {
+// Null-safe name resolution functions
+const getDivisionName = (id: number | null | undefined) => {
+  if (!id) return 'N/A';
   return divisions.value.find(d => d.id === id)?.division_name_ban || 'N/A';
 };
 
-const getDistrictName = (id: number) => {
-  return divisions.value.find(d => d.id === id)?.district_name_ban || 'N/A';
-};
-const getUpazilaName = (id: number) => {
-  return districts.value.find(d => d.id === id)?.district_name_ban || 'N/A';
-};
-const getUnionName = (id: number) => {
-  return districts.value.find(d => d.id === id)?.district_name_ban || 'N/A';
-};
-const getWardName = (id: number) => {
+const getDistrictName = (id: number | null | undefined) => {
+  if (!id) return 'N/A';
   return districts.value.find(d => d.id === id)?.district_name_ban || 'N/A';
 };
 
-// ... implement similar functions for upazila, union, ward
+const getUpazilaName = (id: number | null | undefined) => {
+  if (!id) return 'N/A';
+  return upzillahs.value.find(u => u.id === id)?.upazila_name_ban || 'N/A';
+};
 
-// Table columns
+const getUnionName = (id: number | null | undefined) => {
+  if (!id) return 'N/A';
+  return unions.value.find(u => u.id === id)?.union_name_ban || 'N/A';
+};
+
+const getWardName = (id: number | null | undefined) => {
+  if (!id) return 'N/A';
+  return wards.value.find(w => w.id === id)?.ward_name_ban || 'N/A';
+};
+
+// Table columns with null-safe data access
 const centerColumns = [
   {
     title: 'ID',
     dataIndex: 'id',
     width: 80,
-    sorter: (a: electionCenterInterface, b: electionCenterInterface) => a.id - b.id
+    sorter: (a: electionCenterInterface, b: electionCenterInterface) => (a.id || 0) - (b.id || 0)
   },
   {
     title: 'Center Name',
     dataIndex: 'center_name',
     sorter: (a: electionCenterInterface, b: electionCenterInterface) => 
-      a.center_name.localeCompare(b.center_name)
+      (a.center_name || '').localeCompare(b.center_name || '')
   },
   {
     title: 'Bengali Name',
-    dataIndex: 'center_name_ban'
+    dataIndex: 'center_name_ban',
+    customRender: ({ text }: { text?: string }) => text || 'N/A'
   },
   {
     title: 'Address Details',
-    key: 'address_details'
+    key: 'address_details',
+    customRender: ({ text }: { text?: any }) => text ? formatAddress(text) : 'N/A'
   },
   {
     title: 'Actions',
@@ -208,7 +233,6 @@ const centerColumns = [
   }
 ];
 </script>
-
 <style scoped>
 .ant-input-affix-wrapper {
   @apply rounded-lg border-gray-300 hover:border-blue-500 focus:border-blue-500 transition-all duration-300;

@@ -257,7 +257,7 @@ const handleSubmit = async () => {
       ward: null
     };
 
-    message.success('Center created successfully!');
+    message.success(response.data.msg);
   } catch (error) {
     console.error('Submission error:', error);
     message.error('Failed to create center!');

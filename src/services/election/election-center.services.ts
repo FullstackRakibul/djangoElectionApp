@@ -4,7 +4,7 @@ import { electionHttpJson } from "@/utils/axios/base.Http"
 
 export const electionCenterListDataService = async () => {
   const apiInstance = electionHttpJson();
-  const response = apiInstance.get("/election/election_center")
+  const response = await apiInstance.get("/election/election_center")
   return response
 }
 
