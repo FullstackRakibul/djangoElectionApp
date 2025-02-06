@@ -49,8 +49,8 @@
         <a-table :dataSource="filteredData" :columns="columns" :pagination="{ pageSize: 8 }" bordered size="middle">
           <template #bodyCell="{ column, text }">
             <template v-if="column.dataIndex === 'is_deleted'">
-              <a-tag :color="text ? 'red' : 'green'">
-                {{ text ? 'Deleted' : 'Active' }}
+              <a-tag :color="text ? 'blue' : 'green'">
+                {{ text ? 'Sent to Audit' : 'Active' }}
               </a-tag>
             </template>
             <template v-else-if="column.dataIndex === 'vote_count'">
