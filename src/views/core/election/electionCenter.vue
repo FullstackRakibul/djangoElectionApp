@@ -4,7 +4,7 @@
     <ElectionCenterCreateForm />
 
     <!-- Search and Filters -->
-    <a-card class="shadow-sm">
+    <a-card class="shadow-sm" :headStyle="{ borderBottom: '2px solid #1890ff' }">
       <a-row :gutter="16" class="items-center">
         <a-col :span="8">
           <a-input
@@ -65,7 +65,7 @@
               <a-button type="link" size="small" class="text-blue-600 hover:text-blue-800">
                 Edit
               </a-button>
-              <a-button type="link" danger size="small" class="hover:text-red-800">
+              <a-button type="link" @click="handleDelete(record.id)" danger size="small" class="hover:text-red-800">
                 Delete
               </a-button>
             </a-space>
@@ -80,7 +80,7 @@
 import { ref, computed, onMounted } from 'vue';
 import { SearchOutlined } from '@ant-design/icons-vue';
 import { message } from 'ant-design-vue';
-import { electionCenterListDataService } from '@/services/election/election-center.services';
+import { deleteElectionCenterService, electionCenterListDataService } from '@/services/election/election-center.services';
 import type { electionCenterInterface, electionCenterListInterface } from '@/interface/election.interface';
 
 
@@ -232,6 +232,15 @@ const centerColumns = [
     width: 150
   }
 ];
+
+
+// handle delete
+
+const handleDelete = async (id:number) => {
+  const response = await deleteElectionCenterService(id);
+  message.warning('Record Removed');
+  refreshData();
+};
 </script>
 <style scoped>
 .ant-input-affix-wrapper {

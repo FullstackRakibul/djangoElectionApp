@@ -18,3 +18,10 @@ export const electionCenterCreateService = async (data: electionCenterInterface)
   return response
 
 }
+
+
+export const deleteElectionCenterService = async (id: number) => {
+  const apiInstance = electionHttpJson()
+  const response = await apiInstance.delete("/election/election_center/?pk=" + id)
+  return response
+}

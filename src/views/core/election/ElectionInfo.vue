@@ -128,6 +128,7 @@ const fetchUserListData = async () => {
       <a-card 
         title="নতুন নির্বাচন তৈরি করুন"
         class="shadow-lg hover:shadow-xl transition-shadow duration-300"
+        :headStyle="{ borderBottom: '2px solid #1890ff' }"
       >
         <a-form layout="vertical" class="space-y-4">
           <!-- English Name -->
@@ -247,6 +248,7 @@ const fetchUserListData = async () => {
       <a-card 
         title="নির্বাচন তালিকা"
         class="shadow-lg hover:shadow-xl transition-shadow duration-300"
+        :headStyle="{ borderBottom: '2px solid #1890ff' }"
       >
         <a-table 
           :dataSource="ElectionInfoData"

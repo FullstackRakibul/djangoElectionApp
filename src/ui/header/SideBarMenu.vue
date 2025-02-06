@@ -33,8 +33,10 @@ const findMenuItem = (menuItems: typeof items.value, key: string): any => {
       const found = findMenuItem(item.children, key);
       if (found) return found;
     }
+
+    
   }
-  return null; // Return null if no matching item is found
+  return null; 
 };
 
 // Handle menu item click

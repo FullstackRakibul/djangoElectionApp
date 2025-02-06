@@ -94,7 +94,7 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <a-card title="Seat Management">
+  <a-card title="Seat Management" :headStyle="{ borderBottom: '2px solid #1890ff' }">
     <template #extra>
       <a-button type="primary" @click="handleSubmit">Create Seat</a-button>
     </template>
@@ -139,7 +139,7 @@ const handleSubmit = async () => {
       </a-form-item>
     </a-form>
 
-    <a-card title="Existing Seats" style="margin-top: 20px;">
+    <a-card title="Existing Seats" style="margin-top: 20px;" :headStyle="{ borderBottom: '2px solid #1890ff' }">
       <a-table :dataSource="ElectionSeatData" :columns="ElectionSeatColumn" rowKey="id">
         <template #bodyCell="{ column, text }">
           <template v-if="column.dataIndex === 'is_deleted'">
