@@ -6,7 +6,7 @@ export interface electionCenterListInterface {
   center_name: string;
   center_name_ban?: string;
   address?: number;
-  address_details?: addressInterface;
+  address_details: addressInterface;
 }
 
 export interface electionCenterInterface {
@@ -30,11 +30,19 @@ export interface electionInfoInterface {
 }
 
 export interface electionDataInterface {
+  // key?: number;
+  // vote_count: number;
+  // election: number;
+  // worker: [];
+  // created_by?: number;
+  // updated_by?: number;
+
+  key: number;
   vote_count: number;
+  is_deleted: boolean;
   election: number;
-  worker: [];
-  created_by?: number;
-  updated_by?: number;
+  worker: number;
+  election_center: number;
 }
 
 export interface electionDetailsInterface {
@@ -66,6 +74,7 @@ export interface electionType {
 }
 
 export interface electionPartyInterfcae {
+  id?: number;
   party_name: string;
   party_name_ban?: string;
   party_symbol: string;

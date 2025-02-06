@@ -2,6 +2,7 @@
   <a-card 
     title="Create Election Center" 
     class="shadow-lg rounded-xs transition-all duration-300 hover:shadow-xl mb-8"
+    :headStyle="{ borderBottom: '2px solid #1890ff' }"
   >
     <a-form layout="vertical" :model="formState" @finish="handleSubmit" class="p-6">
       <a-row :gutter="24">
@@ -257,7 +258,7 @@ const handleSubmit = async () => {
       ward: null
     };
 
-    message.success('Center created successfully!');
+    message.success(response.data.msg);
   } catch (error) {
     console.error('Submission error:', error);
     message.error('Failed to create center!');

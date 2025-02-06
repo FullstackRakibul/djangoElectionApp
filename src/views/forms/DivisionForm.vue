@@ -31,13 +31,16 @@ const divisionForm = reactive<division>({
 const countryList = ref<Country[]>([]);
 const divisionList = ref<division[]>([]);
 
-
-
 // Fetch country list on component mount
 onMounted(() => {
   getCountryList();
   getDivisionList();
 });
+
+
+
+
+
 
 
 
@@ -113,7 +116,9 @@ const divisionListColumns = [
   },
   {
     title : 'Country',
-    dataIndex :'country'
+    dataIndex :'country',
+    customRender: ({ text }: { text: number[] }) =>
+      text.map(id => countryList.value.find(country => country.id === id)?.country_name_ban || 'N/A')
   },
   {
     title: 'Action',

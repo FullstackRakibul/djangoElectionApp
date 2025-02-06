@@ -138,7 +138,7 @@ export const getElectionPartyService = async () => {
   return response;
 };
 
-export const postElectionPartyService = async (
+export const createElectionPartyService = async (
   values: electionPartyInterfcae
 ) => {
   const apiInstance = electionHttpJson();
